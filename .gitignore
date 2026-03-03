@@ -1,0 +1,4 @@
+node_modules/
+generate-pdf.mjs
+PIKI_기획서.pdf
+.claude/

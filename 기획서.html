@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Project SENTINEL 기획서 — PIKI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #222;
+    line-height: 1.65;
+    font-size: 9.5pt;
+    background: #fff;
+  }
+
+  /* ── Cover ── */
+  .cover {
+    width: 210mm; min-height: 297mm; margin: 0 auto;
+    display: flex; flex-direction: column; justify-content: space-between;
+    page-break-after: always; position: relative; overflow: hidden;
+  }
+  .cover-top-bar { height: 8px; background: linear-gradient(90deg, #0052CC, #00C7B7); }
+  .cover-body {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 60mm 30mm; text-align: center; position: relative;
+  }
+  .cover-bg-circle {
+    position: absolute; width: 420px; height: 420px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,82,204,0.04) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+  .cover-label {
+    font-size: 9pt; font-weight: 600; color: #0052CC;
+    letter-spacing: 6px; text-transform: uppercase; margin-bottom: 20px; position: relative;
+  }
+  .cover-title {
+    font-size: 36pt; font-weight: 900; color: #111;
+    letter-spacing: -1px; margin-bottom: 8px; position: relative;
+  }
+  .cover-title span {
+    background: linear-gradient(135deg, #0052CC, #00C7B7);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .cover-subtitle {
+    font-size: 13pt; color: #555; font-weight: 400;
+    margin-bottom: 50px; position: relative;
+  }
+  .cover-divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, #0052CC, #00C7B7);
+    margin: 0 auto 40px; position: relative;
+  }
+  .cover-meta { position: relative; font-size: 9.5pt; color: #666; line-height: 2.2; }
+  .cover-meta strong {
+    color: #333; display: inline-block; width: 80px;
+    text-align: right; margin-right: 15px;
+  }
+  .cover-bottom {
+    padding: 15px 30mm; background: #f8f9fa; border-top: 1px solid #e9ecef;
+    display: flex; justify-content: space-between; font-size: 8pt; color: #999;
+  }
+
+  /* ── Page ── */
+  .page {
+    width: 210mm; min-height: 297mm; margin: 0 auto;
+    padding: 18mm 24mm 20mm;
+    page-break-after: always; position: relative;
+  }
+  .page::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 4px; background: linear-gradient(90deg, #0052CC, #00C7B7);
+  }
+  .page-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 10px; border-bottom: 1px solid #e9ecef;
+    margin-bottom: 18px; font-size: 7.5pt; color: #999;
+  }
+  .page-header .logo-text { font-weight: 700; color: #0052CC; font-size: 8.5pt; }
+
+  /* ── Typography ── */
+  h2 {
+    font-size: 13pt; font-weight: 700; color: #0052CC;
+    margin: 0 0 14px; padding-bottom: 7px; border-bottom: 2px solid #0052CC;
+  }
+  h2 .num {
+    display: inline-block; background: #0052CC; color: #fff;
+    width: 24px; height: 24px; border-radius: 50%; text-align: center;
+    line-height: 24px; font-size: 10pt; margin-right: 8px; vertical-align: middle;
+  }
+  h3 { font-size: 10pt; font-weight: 700; color: #333; margin: 16px 0 8px; }
+  p { margin-bottom: 6px; }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 8.5pt; }
+  th, td { padding: 6px 10px; text-align: left; border: 1px solid #dee2e6; }
+  th {
+    background: #0052CC; color: #fff; font-weight: 600;
+    font-size: 8pt; text-align: center; white-space: nowrap;
+  }
+  td { vertical-align: middle; }
+  tr:nth-child(even) td { background: #f8f9fc; }
+
+  /* ── Cards ── */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+  .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 10px 0; }
+  .card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; background: #fff; }
+  .card-accent { border-left: 4px solid #0052CC; }
+  .card h4 { font-size: 9pt; font-weight: 700; color: #0052CC; margin-bottom: 4px; }
+  .card p { font-size: 8.5pt; color: #555; margin: 0; line-height: 1.5; }
+  .card-icon { font-size: 20pt; margin-bottom: 6px; }
+
+  /* ── Stat Boxes ── */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0; }
+  .stat-box {
+    background: linear-gradient(135deg, #f0f5ff 0%, #e8f4f8 100%);
+    border-radius: 8px; padding: 12px; text-align: center;
+  }
+  .stat-box .stat-value { font-size: 20pt; font-weight: 800; color: #0052CC; line-height: 1.2; }
+  .stat-box .stat-label { font-size: 7.5pt; color: #666; margin-top: 3px; }
+
+  /* ── Bar Charts ── */
+  .chart-container { margin: 10px 0; }
+  .bar-group { margin-bottom: 8px; }
+  .bar-label { font-size: 8pt; font-weight: 500; color: #444; margin-bottom: 3px; display: flex; justify-content: space-between; }
+  .bar-track { height: 20px; background: #f0f0f0; border-radius: 10px; overflow: hidden; }
+  .bar-fill {
+    height: 100%; border-radius: 10px;
+    background: linear-gradient(90deg, #0052CC, #00C7B7);
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 8px; font-size: 7pt; color: #fff; font-weight: 600;
+  }
+
+  /* ── Timeline ── */
+  .timeline { position: relative; padding-left: 28px; margin: 10px 0; }
+  .timeline::before {
+    content: ''; position: absolute; left: 9px; top: 4px; bottom: 4px;
+    width: 3px; background: linear-gradient(180deg, #0052CC, #00C7B7); border-radius: 2px;
+  }
+  .timeline-item { position: relative; margin-bottom: 14px; padding-left: 16px; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -22px; top: 5px;
+    width: 11px; height: 11px; background: #0052CC;
+    border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 2px #0052CC;
+  }
+  .timeline-item .tl-phase { font-size: 7.5pt; font-weight: 700; color: #0052CC; text-transform: uppercase; letter-spacing: 1px; }
+  .timeline-item .tl-title { font-size: 10pt; font-weight: 700; color: #222; margin: 1px 0; }
+  .timeline-item .tl-desc { font-size: 8pt; color: #666; }
+  .timeline-item .tl-period { font-size: 7.5pt; color: #999; margin-top: 1px; }
+
+  /* ── SWOT ── */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+  .swot-box { border-radius: 8px; padding: 12px; }
+  .swot-box h4 { font-size: 8.5pt; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+  .swot-box ul { list-style: none; padding: 0; font-size: 8pt; line-height: 1.7; }
+  .swot-box ul li::before { content: '•'; margin-right: 5px; font-weight: 700; }
+  .swot-s { background: #E3F2FD; } .swot-s h4 { color: #1565C0; } .swot-s ul li::before { color: #1565C0; }
+  .swot-w { background: #FFF3E0; } .swot-w h4 { color: #E65100; } .swot-w ul li::before { color: #E65100; }
+  .swot-o { background: #E8F5E9; } .swot-o h4 { color: #2E7D32; } .swot-o ul li::before { color: #2E7D32; }
+  .swot-t { background: #FCE4EC; } .swot-t h4 { color: #C62828; } .swot-t ul li::before { color: #C62828; }
+
+  /* ── Pricing ── */
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 10px 0; }
+  .pricing-box { border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; text-align: center; position: relative; }
+  .pricing-box.best { border: 2px solid #0052CC; box-shadow: 0 4px 16px rgba(0,82,204,0.1); }
+  .pricing-badge {
+    position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, #0052CC, #00C7B7);
+    color: #fff; font-size: 7pt; font-weight: 700; padding: 2px 12px; border-radius: 10px; letter-spacing: 1px;
+  }
+  .pricing-name { font-size: 9pt; font-weight: 600; color: #555; margin-bottom: 4px; }
+  .pricing-price { font-size: 22pt; font-weight: 800; color: #0052CC; line-height: 1.1; }
+  .pricing-price span { font-size: 9pt; font-weight: 400; color: #999; }
+  .pricing-list { list-style: none; padding: 0; margin: 8px 0 0; font-size: 8pt; color: #555; text-align: left; }
+  .pricing-list li { padding: 3px 0; border-bottom: 1px solid #f0f0f0; padding-left: 14px; position: relative; }
+  .pricing-list li::before { content: '✓'; position: absolute; left: 0; color: #0052CC; font-weight: 700; }
+
+  /* ── Donut ── */
+  .donut-row { display: flex; justify-content: center; gap: 24px; margin: 14px 0; }
+  .donut-item { text-align: center; }
+  .donut {
+    width: 80px; height: 80px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 5px;
+  }
+  .donut-inner {
+    width: 54px; height: 54px; border-radius: 50%; background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12pt; font-weight: 800; color: #0052CC;
+  }
+  .donut-label { font-size: 7.5pt; color: #666; font-weight: 500; }
+
+  /* ── IA Tree ── */
+  .ia-tree {
+    background: #f8f9fc; border: 1px solid #e2e8f0; border-radius: 8px;
+    padding: 14px 18px; font-family: 'Noto Sans KR', monospace;
+    font-size: 8pt; line-height: 1.8; color: #444; margin: 8px 0;
+  }
+  .ia-tree .section-label { color: #0052CC; font-weight: 700; }
+
+  /* ── Risk ── */
+  .risk-high { color: #E53E3E; font-weight: 700; }
+  .risk-mid { color: #DD6B20; font-weight: 700; }
+  .risk-low { color: #38A169; font-weight: 700; }
+
+  /* ── Status ── */
+  .status-done { display: inline-block; background: #C6F6D5; color: #22543D; font-size: 7.5pt; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .status-pending { display: inline-block; background: #FED7D7; color: #822727; font-size: 7.5pt; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+
+  /* ── Approval ── */
+  .approval-table th { background: #f8f9fc; color: #333; font-size: 8pt; }
+  .approval-table td { text-align: center; height: 45px; vertical-align: middle; font-size: 8.5pt; }
+
+  /* ── Highlight ── */
+  .highlight-box {
+    background: linear-gradient(135deg, #f0f5ff 0%, #e8f4f8 100%);
+    border-radius: 8px; padding: 14px; margin: 8px 0;
+  }
+
+  /* ── Check List ── */
+  ul.check-list { list-style: none; padding: 0; }
+  ul.check-list li { padding: 2px 0 2px 18px; position: relative; font-size: 8.5pt; }
+  ul.check-list li::before { content: '✓'; position: absolute; left: 0; color: #0052CC; font-weight: 700; }
+
+  /* ── Page Footer ── */
+  .page-foot {
+    position: absolute; bottom: 16mm; left: 24mm; right: 24mm;
+    text-align: center; font-size: 7.5pt; color: #ccc;
+    border-top: 1px solid #eee; padding-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ COVER ═══════════════ -->
+<div class="cover">
+  <div class="cover-top-bar"></div>
+  <div class="cover-body">
+    <div class="cover-bg-circle"></div>
+    <div class="cover-label">PROJECT PLANNING</div>
+    <div class="cover-title">Project : <span>SENTINEL</span></div>
+    <div class="cover-subtitle">PIKI 광고 전환 시스템 구축 기획서</div>
+    <div class="cover-divider"></div>
+    <div class="cover-meta">
+      <strong>문서번호</strong> PK-PM-2026-0303-001<br>
+      <strong>버전</strong> v1.0<br>
+      <strong>작성일</strong> 2026. 03. 03.<br>
+      <strong>작성자</strong> 임채현<br>
+    </div>
+  </div>
+  <div class="cover-bottom">
+    <span>PIKI Confidential</span>
+    <span>© 2026 PIKI. All rights reserved.</span>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE 1 : 프로젝트 개요 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>Project : SENTINEL 기획서 — 01</span>
+  </div>
+
+  <h2><span class="num">1</span> 프로젝트 개요</h2>
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-value">7일</div>
+      <div class="stat-label">최단 구축 기간</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value">ROAS</div>
+      <div class="stat-label">광고 수익률 개선</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value">&#189; CAC</div>
+      <div class="stat-label">고객 획득 비용 절감</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value">D+14</div>
+      <div class="stat-label">프로젝트 총 기간</div>
+    </div>
+  </div>
+
+  <table>
+    <tr><th width="120">항목</th><th>내용</th></tr>
+    <tr><td><strong>프로젝트명</strong></td><td>Project : SENTINEL — PIKI 광고 전환 시스템 구축</td></tr>
+    <tr><td><strong>목적</strong></td><td>광고비 낭비를 줄이는 전환 시스템 구축 (광고→랜딩→데이터→재전환)</td></tr>
+    <tr><td><strong>대상 서비스</strong></td><td>전환 랜딩페이지 / 데이터 추적 시스템 / SNS 자동화 + 리타겟팅</td></tr>
+    <tr><td><strong>기술 스택</strong></td><td>HTML5, CSS3 (Custom Properties), Vanilla JavaScript ES6+</td></tr>
+    <tr><td><strong>타겟 고객</strong></td><td>소상공인, 스타트업, 1인 사업자 (광고 집행 중이나 전환 페이지 미보유)</td></tr>
+  </table>
+
+  <h3>투입 인력</h3>
+  <div class="highlight-box" style="display:flex; align-items:center; gap:24px;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#0052CC,#00C7B7); display:flex; align-items:center; justify-content:center; color:#fff; font-size:14pt; font-weight:800; flex-shrink:0;">임</div>
+      <div>
+        <div style="font-size:10pt; font-weight:700; color:#222;">임채현 <span style="font-size:7.5pt; font-weight:500; color:#0052CC; background:#EBF2FF; padding:1px 6px; border-radius:4px; margin-left:4px;">담당</span></div>
+        <div style="font-size:8pt; color:#666;">기획 · 디자인 · 개발 · QA · 배포 — 1인 총괄</div>
+      </div>
+    </div>
+    <div style="width:1px; height:36px; background:#ddd;"></div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div style="width:44px; height:44px; border-radius:50%; background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#888; font-size:14pt; font-weight:800; flex-shrink:0;">—</div>
+      <div>
+        <div style="font-size:10pt; font-weight:700; color:#222;">예비 인력 1명 <span style="font-size:7.5pt; font-weight:500; color:#888; background:#f0f0f0; padding:1px 6px; border-radius:4px; margin-left:4px;">대기</span></div>
+        <div style="font-size:8pt; color:#999;">일정 지연 · 긴급 이슈 발생 시 투입</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>프로젝트 범위</h3>
+  <div class="card-grid">
+    <div class="card card-accent">
+      <h4>포함 (In-Scope)</h4>
+      <ul class="check-list">
+        <li>전환 중심 UX/CTA 설계 및 와이어프레임</li>
+        <li>반응형 UI 디자인 (Desktop / Mobile)</li>
+        <li>프론트엔드 개발 (HTML/CSS/JS)</li>
+        <li>백엔드 서버 + 호스팅 인프라 구축</li>
+        <li>문의 폼, 인터랙션 구현</li>
+        <li>도메인 연결, SSL 설치</li>
+        <li>GA4 + UTM + 메타/구글 픽셀 추적 설정</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left: 4px solid #ccc;">
+      <h4 style="color:#999;">제외 (Out-of-Scope)</h4>
+      <ul class="check-list" style="color:#888;">
+        <li>브랜드 CI/BI 리뉴얼</li>
+        <li>영상 / 모션 그래픽 제작</li>
+        <li>대규모 DB 설계 (ERP/CRM)</li>
+        <li>광고 캠페인 직접 집행</li>
+        <li>결제 시스템 연동</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 01</div>
+</div>
+
+<!-- ═══════════════ PAGE 2 : 배경 및 분석 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>Project : SENTINEL 기획서 — 02</span>
+  </div>
+
+  <h2><span class="num">2</span> 배경 및 현황 분석</h2>
+
+  <h3>추진 배경</h3>
+  <div class="card-grid-3">
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">📊</div>
+      <h4>전환 거점 부재</h4>
+      <p>광고 트래픽을 수용할<br>전환 전용 페이지 없음</p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">📱</div>
+      <h4>제한적 고객 접점</h4>
+      <p>SNS 프로필만으로는<br>서비스 안내 한계</p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">🏢</div>
+      <h4>브랜드 가시성</h4>
+      <p>경쟁사 대비<br>온라인 신뢰도 확보 필요</p>
+    </div>
+  </div>
+
+  <h3>시장 환경</h3>
+  <div class="chart-container">
+    <div class="bar-group">
+      <div class="bar-label"><span>국내 웹 에이전시 시장 규모</span><span>1.2조원</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:85%;">연 12% 성장</div></div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-label"><span>소상공인 디지털 전환 수요</span><span>급성장</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:92%;"></div></div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-label"><span>노코드/로우코드 플랫폼 확산</span><span>위협요인</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:65%; background:linear-gradient(90deg,#DD6B20,#F6AD55);"></div></div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-label"><span>SNS+랜딩 결합 서비스 (차별화 기회)</span><span>블루오션</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:30%; background:linear-gradient(90deg,#38A169,#68D391);">낮은 경쟁</div></div>
+    </div>
+  </div>
+
+  <h3>SWOT 분석</h3>
+  <div class="swot-grid">
+    <div class="swot-box swot-s">
+      <h4>💪 Strength</h4>
+      <ul>
+        <li>최단 7일 내 납기 가능</li>
+        <li>SNS 자동화 + 랜딩 원스톱 서비스</li>
+        <li>합리적 가격대 (49만원~)</li>
+      </ul>
+    </div>
+    <div class="swot-box swot-w">
+      <h4>⚠️ Weakness</h4>
+      <ul>
+        <li>1인 운영 체제</li>
+        <li>포트폴리오 규모 제한적</li>
+        <li>백엔드 역량 외주 의존</li>
+      </ul>
+    </div>
+    <div class="swot-box swot-o">
+      <h4>🚀 Opportunity</h4>
+      <ul>
+        <li>소상공인 디지털 전환 수요 증가</li>
+        <li>AI 기반 콘텐츠 자동화 트렌드</li>
+        <li>결합 서비스 시장 내 선점 가능</li>
+      </ul>
+    </div>
+    <div class="swot-box swot-t">
+      <h4>🔥 Threat</h4>
+      <ul>
+        <li>노코드 플랫폼 확산 (아임웹, 식스샵)</li>
+        <li>에이전시 간 가격 경쟁 심화</li>
+        <li>대형 에이전시 시장 하향 진출</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 02</div>
+</div>
+
+<!-- ═══════════════ PAGE 3 : 서비스 & 가격 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>Project : SENTINEL 기획서 — 03</span>
+  </div>
+
+  <h2><span class="num">3</span> 서비스 구성 및 가격 체계</h2>
+
+  <h3>핵심 서비스</h3>
+  <div class="card-grid-3">
+    <div class="card" style="border-top: 3px solid #0052CC;">
+      <div style="font-size:8pt; color:#0052CC; font-weight:700; margin-bottom:3px;">SERVICE 01</div>
+      <h4 style="font-size:10pt; color:#222;">전환 랜딩페이지</h4>
+      <p style="font-size:8pt; margin:6px 0;">광고 클릭 후 이탈을 막고 전환으로 연결</p>
+      <ul class="check-list" style="font-size:8pt;">
+        <li>전환율 중심 UX/CTA 설계</li>
+        <li>반응형 모바일 최적화</li>
+        <li>UTM + GA4 + 픽셀 세팅</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top: 3px solid #00C7B7;">
+      <div style="font-size:8pt; color:#00C7B7; font-weight:700; margin-bottom:3px;">SERVICE 02</div>
+      <h4 style="font-size:10pt; color:#222;">데이터 추적 시스템</h4>
+      <p style="font-size:8pt; margin:6px 0;">3계층 데이터로 광고 전략 지속 개선</p>
+      <ul class="check-list" style="font-size:8pt;">
+        <li>결과/시각화/행동 데이터</li>
+        <li>GA4 + GTM + 픽셀 풀 세팅</li>
+        <li>ROAS/CAC 대시보드</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top: 3px solid #7C3AED;">
+      <div style="font-size:8pt; color:#7C3AED; font-weight:700; margin-bottom:3px;">SERVICE 03</div>
+      <h4 style="font-size:10pt; color:#222;">SNS 자동화 + 리타겟</h4>
+      <p style="font-size:8pt; margin:6px 0;">이탈 고객 재유입으로 지속적 재전환</p>
+      <ul class="check-list" style="font-size:8pt;">
+        <li>AI 기반 게시글 자동 작성</li>
+        <li>인스타/페북/틱톡 예약 발행</li>
+        <li>리타겟팅 캠페인 설계</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>가격 체계</h3>
+  <div class="pricing-grid">
+    <div class="pricing-box">
+      <div class="pricing-name">스타터</div>
+      <div class="pricing-price">49<span>만원~</span></div>
+      <p style="font-size:8pt; color:#888; margin:4px 0;">전환 랜딩 시스템 기본</p>
+      <ul class="pricing-list">
+        <li>원페이지 전환 랜딩</li>
+        <li>모바일 반응형</li>
+        <li>기본 폼 + GA4 세팅</li>
+        <li>서버 + 호스팅 구축</li>
+        <li>최단 7일 내 구축 완료</li>
+        <li>1회 무료 수정 포함</li>
+      </ul>
+      <p style="font-size:7pt; color:#0052CC; margin-top:6px;">+ 월 관리 9.9만원/월 (선택)</p>
+    </div>
+    <div class="pricing-box best">
+      <div class="pricing-badge">BEST</div>
+      <div class="pricing-name">프로</div>
+      <div class="pricing-price">99<span>만원~</span></div>
+      <p style="font-size:8pt; color:#888; margin:4px 0;">전환 시스템 풀 패키지</p>
+      <ul class="pricing-list">
+        <li>멀티페이지 전환 랜딩</li>
+        <li>UTM + GA4 + 픽셀 풀 세팅</li>
+        <li>ROAS/CAC 대시보드</li>
+        <li>백엔드 서버 + 인프라 구축</li>
+        <li>5일 내 구축 완료</li>
+        <li>3회 무료 수정 포함</li>
+      </ul>
+      <p style="font-size:7pt; color:#0052CC; margin-top:6px;">+ 월 관리 19.9만원/월 (선택)</p>
+    </div>
+    <div class="pricing-box">
+      <div class="pricing-name">그로스</div>
+      <div class="pricing-price" style="font-size:18pt;">맞춤<span> 견적</span></div>
+      <p style="font-size:8pt; color:#888; margin:4px 0;">전환 + 성장 시스템</p>
+      <ul class="pricing-list">
+        <li>프로 전체 포함</li>
+        <li>SNS 자동화 풀 세팅</li>
+        <li>리타겟팅 캠페인 설계</li>
+        <li>월간 성과 리포트</li>
+        <li>전담 매니저 배정</li>
+        <li>수정 무제한</li>
+      </ul>
+      <p style="font-size:7pt; color:#0052CC; margin-top:6px;">월 관리 포함</p>
+    </div>
+  </div>
+
+  <h3>업종별 예상 개선 효과</h3>
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-value" style="font-size:15pt;">~50%</div>
+      <div class="stat-label">카페/음식점<br>리드당 비용 절감</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" style="font-size:15pt;">~50%</div>
+      <div class="stat-label">뷰티/네일샵<br>예약당 비용 절감</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" style="font-size:15pt;">~45%</div>
+      <div class="stat-label">스타트업/SaaS<br>CAC 절감</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" style="font-size:15pt;">~50%</div>
+      <div class="stat-label">교육/학원<br>수강신청당 비용 절감</div>
+    </div>
+  </div>
+  <p style="font-size:7.5pt; color:#999; text-align:center;">* 업계 평균 데이터 기반 예상 시나리오이며, PIKI 실 운영 사례가 아닙니다. 실제 성과는 업종·광고예산·시장상황에 따라 상이.</p>
+
+  <div class="page-foot">PIKI Confidential · 03</div>
+</div>
+
+<!-- ═══════════════ PAGE 4 : 페이지 설계 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>Project : SENTINEL 기획서 — 04</span>
+  </div>
+
+  <h2><span class="num">4</span> 랜딩페이지 설계</h2>
+
+  <h3>정보 구조 (IA)</h3>
+  <div class="ia-tree">
+    <strong style="font-size:9.5pt;">PIKI 전환 시스템 랜딩페이지</strong><br>
+    │<br>
+    ├─ <span class="section-label">[NAV]</span> 글로벌 네비게이션 — 로고 / 메뉴(5) / CTA 버튼<br>
+    ├─ <span class="section-label">[HERO]</span> 메인 비주얼 — 헤드카피 + 서브카피 + CTA x2 + 핵심지표(7일/ROAS/CAC) + 목업<br>
+    ├─ <span class="section-label">[PAIN]</span> 고객 고충 — 카드 x4 (전환부재 / 링크부재 / 성과부진 / 데이터부재)<br>
+    ├─ <span class="section-label">[TARGET]</span> 타겟 고객 — 카드 x4 (전환↓ / 프로필뿐 / 성과↓ / DM만)<br>
+    ├─ <span class="section-label">[SYSTEM]</span> 전환 시스템 — 광고유입 → 전환랜딩 → 데이터추적 → 재전환/리타겟<br>
+    ├─ <span class="section-label">[SERVICE]</span> 설치 항목 — 전환 랜딩 ★ / 데이터 추적 / SNS+리타겟<br>
+    ├─ <span class="section-label">[PROCESS]</span> 설치 프로세스 — 진단 → 설계 → 구축 → 런칭<br>
+    ├─ <span class="section-label">[METRICS]</span> 데이터 — 업종별 광고 효율 개선 시나리오 (카페/뷰티/SaaS/교육)<br>
+    ├─ <span class="section-label">[PRICING]</span> 가격 — 스타터 / 프로 [BEST] / 그로스<br>
+    ├─ <span class="section-label">[GUARANTEE]</span> 보장 — 사전 시안 / 납기 보장 / 수정 합의<br>
+    ├─ <span class="section-label">[FAQ]</span> 자주 묻는 질문 — 5개 항목<br>
+    ├─ <span class="section-label">[CTA]</span> 문의 폼 — 이름 / 연락처 / 상황 선택 / 광고 예산 / 메시지<br>
+    └─ <span class="section-label">[FOOTER]</span> 푸터 — 브랜드 / 링크 / 저작권
+  </div>
+
+  <h3>전환 전략</h3>
+  <table>
+    <tr><th>전략</th><th>적용 위치</th><th>기법</th><th>기대 효과</th></tr>
+    <tr><td><strong>고충 공감→해결</strong></td><td>PAIN → SERVICE</td><td>문제 인식 → 솔루션 제시</td><td>서비스 필요성 자각</td></tr>
+    <tr><td><strong>데이터 기반 증거</strong></td><td>METRICS</td><td>업종별 개선 시나리오 제시</td><td>신뢰도 확보</td></tr>
+    <tr><td><strong>가격 앵커링</strong></td><td>PRICING</td><td>3단 구조 + BEST 강조</td><td>프로 상품 유도</td></tr>
+    <tr><td><strong>다중 CTA</strong></td><td>NAV / HERO / CTA</td><td>전 구간 전환 가능</td><td>이탈 최소화</td></tr>
+    <tr><td><strong>핵심 지표</strong></td><td>HERO</td><td>7일 / ROAS / ½CAC</td><td>즉각적 가치 전달</td></tr>
+  </table>
+
+  <h3>기술 사양</h3>
+  <div class="card-grid-3">
+    <div class="card card-accent">
+      <h4>마크업 & 스타일</h4>
+      <p>HTML5 Semantic<br>CSS3 Custom Properties<br>Noto Sans KR (Google Fonts)</p>
+    </div>
+    <div class="card card-accent">
+      <h4>스크립트 & 인터랙션</h4>
+      <p>Vanilla JS ES6+<br>IntersectionObserver API<br>Smooth Scroll / Form Valid.</p>
+    </div>
+    <div class="card card-accent">
+      <h4>반응형 & 최적화</h4>
+      <p>Mobile First 설계<br>Breakpoint: 768 / 1024px<br>Lighthouse 90+ 목표</p>
+    </div>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 04</div>
+</div>
+
+<!-- ═══════════════ PAGE 5 : 추진 일정 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>Project : SENTINEL 기획서 — 05</span>
+  </div>
+
+  <h2><span class="num">5</span> 추진 일정</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="tl-phase">PHASE 1</div>
+      <div class="tl-title">기획 (Planning)</div>
+      <div class="tl-desc">요구사항 정의 · 정보구조(IA) 설계 · 와이어프레임 작성</div>
+      <div class="tl-period">D+0 ~ D+2 · 산출물: 요구사항 정의서, IA, 와이어프레임</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-phase">PHASE 2</div>
+      <div class="tl-title">디자인 (Design)</div>
+      <div class="tl-desc">시안 제작 (Desktop/Mobile) · 스타일 가이드 확정 · 피드백 반영</div>
+      <div class="tl-period">D+2 ~ D+4 · 산출물: 디자인 시안, 스타일 가이드</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-phase">PHASE 3</div>
+      <div class="tl-title">개발 (Development)</div>
+      <div class="tl-desc">HTML/CSS/JS 구현 · 반응형 · 폼 · 애니메이션 · 크로스 브라우저 QA</div>
+      <div class="tl-period">D+4 ~ D+7 · 산출물: 소스 코드, QA 리포트</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-phase">PHASE 4</div>
+      <div class="tl-title">검수 및 배포 (QA & Deploy)</div>
+      <div class="tl-desc">실기기 테스트 · 성능 최적화 · 도메인 연결 · SSL · 배포</div>
+      <div class="tl-period">D+7 ~ D+8 · 산출물: 테스트 리포트, 배포 완료</div>
+    </div>
+    <div class="timeline-item" style="margin-bottom:0;">
+      <div class="tl-phase">PHASE 5</div>
+      <div class="tl-title">안정화 및 운영 (Stabilization)</div>
+      <div class="tl-desc">수정 반영 · GA4/GTM 연동 · 전환 추적 설정 · 성과 보고</div>
+      <div class="tl-period">D+8 ~ D+14 · 산출물: 수정 완료, 성과 대시보드</div>
+    </div>
+  </div>
+
+  <h2><span class="num">6</span> 성과 지표 (KPI)</h2>
+
+  <div class="donut-row">
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(#0052CC 0% 90%, #e8e8e8 90% 100%);"><div class="donut-inner">90+</div></div>
+      <div class="donut-label">Lighthouse</div>
+    </div>
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(#00C7B7 0% 80%, #e8e8e8 80% 100%);"><div class="donut-inner">3초</div></div>
+      <div class="donut-label">로딩 속도</div>
+    </div>
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(#7C3AED 0% 60%, #e8e8e8 60% 100%);"><div class="donut-inner">5%+</div></div>
+      <div class="donut-label">폼 전환율</div>
+    </div>
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(#38A169 0% 60%, #e8e8e8 60% 100%);"><div class="donut-inner">40%↓</div></div>
+      <div class="donut-label">이탈률</div>
+    </div>
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(#DD6B20 0% 70%, #e8e8e8 70% 100%);"><div class="donut-inner">2분+</div></div>
+      <div class="donut-label">평균 체류</div>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>지표</th><th>목표</th><th>측정 도구</th><th>주기</th></tr>
+    <tr><td>페이지 로딩 속도</td><td><strong>3초 이내</strong></td><td>Lighthouse</td><td>배포 시 / 월 1회</td></tr>
+    <tr><td>Lighthouse 성능</td><td><strong>90점 이상</strong></td><td>Lighthouse</td><td>배포 시 / 월 1회</td></tr>
+    <tr><td>문의 폼 전환율</td><td><strong>5% 이상</strong></td><td>GA4 이벤트</td><td>주간</td></tr>
+    <tr><td>이탈률</td><td><strong>40% 이하</strong></td><td>GA4</td><td>주간</td></tr>
+    <tr><td>평균 체류 시간</td><td><strong>2분 이상</strong></td><td>GA4</td><td>주간</td></tr>
+    <tr><td>CTA 클릭률</td><td><strong>8% 이상</strong></td><td>GA4 이벤트</td><td>주간</td></tr>
+  </table>
+
+  <div class="page-foot">PIKI Confidential · 05</div>
+</div>
+
+<!-- ═══════════════ PAGE 6 : 리스크 & 현황 & 과제 ═══════════════ -->
+<div class="page" style="padding: 16mm 24mm 18mm; font-size:9pt;">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>Project : SENTINEL 기획서 — 06</span>
+  </div>
+
+  <h2 style="margin:0 0 8px;"><span class="num">7</span> 리스크 관리</h2>
+  <table style="margin:4px 0 10px; font-size:8pt;">
+    <tr><th>No.</th><th>위험 요소</th><th>가능성</th><th>영향도</th><th>대응 방안</th></tr>
+    <tr><td style="text-align:center;">R1</td><td>크로스 브라우저 호환</td><td style="text-align:center;" class="risk-mid">중</td><td style="text-align:center;" class="risk-mid">중</td><td>Chrome, Safari, Edge 사전 QA</td></tr>
+    <tr><td style="text-align:center;">R2</td><td>모바일 레이아웃 깨짐</td><td style="text-align:center;" class="risk-mid">중</td><td style="text-align:center;" class="risk-high">상</td><td>Mobile First + 실기기 테스트</td></tr>
+    <tr><td style="text-align:center;">R3</td><td>폼 스팸 유입</td><td style="text-align:center;" class="risk-high">상</td><td style="text-align:center;" class="risk-low">하</td><td>reCAPTCHA v3 / 허니팟 적용</td></tr>
+    <tr><td style="text-align:center;">R4</td><td>서버/호스팅 장애</td><td style="text-align:center;" class="risk-low">하</td><td style="text-align:center;" class="risk-high">상</td><td>정적 호스팅 + CDN 이중화</td></tr>
+    <tr><td style="text-align:center;">R5</td><td>요구사항 변경 / 일정 지연</td><td style="text-align:center;" class="risk-high">상</td><td style="text-align:center;" class="risk-mid">중</td><td>수정 횟수 사전 합의 + 버퍼(D+14)</td></tr>
+  </table>
+
+  <h2 style="margin:14px 0 8px;"><span class="num">8</span> 현재 개발 현황</h2>
+  <table style="margin:4px 0 10px; font-size:8pt;">
+    <tr><th>산출물</th><th>파일</th><th>상태</th><th>비고</th></tr>
+    <tr><td>메인 페이지</td><td><code>index.html</code></td><td style="text-align:center;"><span class="status-done">완료</span></td><td>11개 섹션 + NAV/Footer (725 Lines)</td></tr>
+    <tr><td>스타일시트</td><td><code>style.css</code></td><td style="text-align:center;"><span class="status-done">완료</span></td><td>반응형, 애니메이션, CSS 변수 (1,619 Lines)</td></tr>
+    <tr><td>백엔드 연동</td><td>—</td><td style="text-align:center;"><span class="status-pending">미착수</span></td><td>폼 데이터 수신 서비스 필요</td></tr>
+    <tr><td>도메인 / 배포</td><td>—</td><td style="text-align:center;"><span class="status-pending">미착수</span></td><td>호스팅 환경 선정 필요</td></tr>
+    <tr><td>GA / 전환 추적</td><td>—</td><td style="text-align:center;"><span class="status-pending">미착수</span></td><td>GTM + GA4 세팅 예정</td></tr>
+  </table>
+
+  <h2 style="margin:14px 0 8px;"><span class="num">9</span> 향후 과제</h2>
+  <div class="card-grid" style="margin:4px 0 10px; gap:8px;">
+    <div class="card card-accent" style="padding:10px 14px;">
+      <h4 style="font-size:8.5pt;">단기 (D+14 이내)</h4>
+      <ul class="check-list" style="font-size:8pt;">
+        <li>폼 수신 서비스 연동 (Formspree / Netlify)</li>
+        <li>SEO 메타 태그 및 OG 태그 보강</li>
+        <li>GA4 + GTM 설치, 전환 이벤트 설정</li>
+        <li>정적 호스팅 배포 및 CI/CD 구성</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:4px solid #7C3AED; padding:10px 14px;">
+      <h4 style="color:#7C3AED; font-size:8.5pt;">중장기 (D+30 이후)</h4>
+      <ul class="check-list" style="font-size:8pt;">
+        <li>UTM 기반 광고 전환 추적 체계 구축</li>
+        <li>A/B 테스트 환경 (카피, CTA, 가격)</li>
+        <li>채팅 상담 위젯 (채널톡, 카카오)</li>
+        <li>다국어(영문) 페이지 확장 검토</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 12px;">
+    <h3 style="margin-bottom: 6px; font-size:9.5pt;">작성자 확인</h3>
+    <table class="approval-table" style="width:50%; font-size:8pt;">
+      <tr><th width="40%">구분</th><th width="60%">작성 / 승인</th></tr>
+      <tr><td style="background:#f8f9fc; font-weight:600;">성명</td><td>임채현</td></tr>
+      <tr><td style="background:#f8f9fc; font-weight:600;">서명</td><td></td></tr>
+      <tr><td style="background:#f8f9fc; font-weight:600;">일자</td><td>2026. 03. 03.</td></tr>
+    </table>
+  </div>
+
+  <div class="page-foot" style="text-align:center;">
+    — 이상 — &nbsp;·&nbsp; PIKI Confidential · 06
+  </div>
+</div>
+
+</body>
+</html>
