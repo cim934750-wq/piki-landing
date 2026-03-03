@@ -30,6 +30,8 @@
     line-height: 1.5;
     font-size: 9pt;
     background: #fff;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   /* ── Page Layout ── */
@@ -925,8 +927,8 @@
   <h3>팀 구성</h3>
   <table>
     <tr><th>역할</th><th>담당</th><th>핵심 역량</th></tr>
-    <tr><td><strong>PM / 풀스택 개발</strong></td><td>PIKI 대표</td><td>바이브코딩 (Claude AI + VSCode), 풀스택, 서버 인프라</td></tr>
-    <tr><td><strong>기획 / 마케팅</strong></td><td>PIKI 대표 (겸임)</td><td>전환 UX 설계, GA4/GTM, 광고 추적 시스템</td></tr>
+    <tr><td><strong>PM / 풀스택 개발</strong></td><td>개발자 1인</td><td>바이브코딩 (Claude AI + VSCode), 풀스택, 서버 인프라</td></tr>
+    <tr><td><strong>기획 / 마케팅</strong></td><td>개발자 1인 (겸임)</td><td>전환 UX 설계, GA4/GTM, 광고 추적 시스템</td></tr>
     <tr><td><strong>디자인</strong></td><td>외부 협업 (필요 시)</td><td>UI/UX 시안, 브랜드 디자인</td></tr>
   </table>
 
@@ -963,19 +965,19 @@
   <div class="data-grid-4">
     <div class="data-card" style="text-align:center;">
       <div class="data-value">78%</div>
-      <div class="data-label">온라인 광고 집행 중<br>but 전환 페이지 미보유</div>
+      <div class="data-label">온라인 광고 집행 중 but 전환 페이지 미보유</div>
     </div>
     <div class="data-card" style="text-align:center;">
       <div class="data-value">62%</div>
-      <div class="data-label">광고 성과 측정<br>방법을 모름</div>
+      <div class="data-label">광고 성과 측정 방법을 모름</div>
     </div>
     <div class="data-card" style="text-align:center;">
       <div class="data-value">1.7%</div>
-      <div class="data-label">SNS 프로필 링크<br>평균 전환율</div>
+      <div class="data-label">SNS 프로필 링크 평균 전환율</div>
     </div>
     <div class="data-card" style="text-align:center;">
       <div class="data-value">340만</div>
-      <div class="data-label">국내 소상공인<br>사업체 수</div>
+      <div class="data-label">국내 소상공인 사업체 수</div>
     </div>
   </div>
   <div class="source">* 통계청 사업체 수 기반. 전환율·광고 집행 비율은 업계 추정치이며 공식 통계가 아닙니다.</div>
@@ -1149,12 +1151,12 @@
     <tr><td>SNS 콘텐츠 자동화</td><td>✓ AI 생성</td><td class="highlight-cell">✓ 핵심 기능</td><td>✗</td><td>✗</td><td>△</td></tr>
     <tr><td>데이터 추적</td><td class="highlight-cell">✓ 포함</td><td>△ (SNS만)</td><td>✗</td><td>✗</td><td>✓ (별도)</td></tr>
     <tr><td>납기</td><td><strong>최단 7일</strong></td><td>즉시</td><td>즉시</td><td>7~30일</td><td>30~90일</td></tr>
-    <tr><td>소유권</td><td class="highlight-cell">✓ 완전 양도</td><td>✗ (구독 종속)</td><td>✗ (플랫폼 종속)</td><td>△</td><td>✓</td></tr>
+    <tr><td>소유권</td><td class="highlight-cell">✓ 코드 제공</td><td>✗ (구독 종속)</td><td>✗ (플랫폼 종속)</td><td>△</td><td>✓</td></tr>
   </table>
 
   <div class="insight-box">
     <h4>PIKI vs Mirra — 핵심 차별점</h4>
-    <p><strong>Mirra</strong>는 SNS 콘텐츠 자동 생성 SaaS(월 29~79만)로, 콘텐츠 제작 시간 절약에 특화. 그러나 <strong>전환 랜딩페이지 구축, 백엔드 개발, 결제/예약 시스템</strong>은 불가. <strong>PIKI</strong>는 "광고 → 전환 랜딩 → 시스템 → 데이터 추적" 전체 퍼널을 직접 구축하며, 일회성 비용으로 코드 소유권 완전 양도. Mirra의 SNS 자동화 강점을 SERVICE 03에 흡수하여 전환 시스템 + 콘텐츠 자동화를 동시에 제공.</p>
+    <p><strong>Mirra</strong>는 SNS 콘텐츠 자동 생성 SaaS(월 29~79만)로, 콘텐츠 제작 시간 절약에 특화. 그러나 <strong>전환 랜딩페이지 구축, 백엔드 개발, 결제/예약 시스템</strong>은 불가. <strong>PIKI</strong>는 "광고 → 전환 랜딩 → 시스템 → 데이터 추적" 전체 퍼널을 직접 구축하며, 일회성 비용으로 코드 제공. Mirra의 SNS 자동화 강점을 SERVICE 03에 흡수하여 전환 시스템 + 콘텐츠 자동화를 동시에 제공.</p>
   </div>
 
   <div class="page-foot">PIKI Confidential · 04</div>
@@ -1366,7 +1368,7 @@
     <div class="data-card">
       <h4>손익분기점 (BEP)</h4>
       <div class="data-value" style="font-size:28pt; margin:6px 0;">3건</div>
-      <p>월 고정비 약 40만원 기준,<br>스타터 1건 + 월관리 2건이면 BEP 달성.</p>
+      <p>월 고정비 약 40만원 기준, 스타터 1건 + 월관리 2건이면 BEP 달성.</p>
       <p style="font-size:8pt; font-weight:600; color:var(--green);">→ Q1 내 BEP 도달 목표</p>
     </div>
   </div>
@@ -1427,19 +1429,19 @@
   <div class="data-grid-4">
     <div class="data-card" style="text-align:center;">
       <div class="data-value-sm" style="color:var(--primary);">90+</div>
-      <div class="data-label">Lighthouse<br>Performance 점수</div>
+      <div class="data-label">Lighthouse Performance 점수</div>
     </div>
     <div class="data-card" style="text-align:center;">
       <div class="data-value-sm" style="color:var(--accent);">3초↓</div>
-      <div class="data-label">페이지<br>로딩 속도</div>
+      <div class="data-label">페이지 로딩 속도</div>
     </div>
     <div class="data-card" style="text-align:center;">
       <div class="data-value-sm" style="color:var(--accent2);">5%+</div>
-      <div class="data-label">문의 폼<br>전환율</div>
+      <div class="data-label">문의 폼 전환율</div>
     </div>
     <div class="data-card" style="text-align:center;">
       <div class="data-value-sm" style="color:var(--green);">40%↓</div>
-      <div class="data-label">평균<br>이탈률</div>
+      <div class="data-label">평균 이탈률</div>
     </div>
   </div>
 
@@ -1650,8 +1652,9 @@
   <div class="data-card-dark" style="margin:10px 0; border-radius:12px; padding:20px;">
     <h4 style="font-size:12pt; margin-bottom:8px;">핵심 메시지</h4>
     <p style="font-size:9.5pt; color:rgba(255,255,255,0.8); line-height:1.8;">
-      PIKI는 <strong style="color:var(--accent);">소상공인 340만 사업체</strong> 중 광고는 집행하지만 전환 시스템이 없는 <strong style="color:var(--accent);">78%</strong>를 타겟으로,<br>
-      <strong style="color:#fff;">풀스택 개발 역량</strong>을 기반으로 "전략 + 개발 + 데이터"를 결합한 원스톱 전환 시스템 구축 서비스를 제공합니다.<br><br>
+      PIKI는 <strong style="color:var(--accent);">소상공인 340만 사업체</strong> 중 광고는 집행하지만 전환 시스템이 없는 <strong style="color:var(--accent);">78%</strong>를 타겟으로, <strong style="color:#fff;">풀스택 개발 역량</strong>을 기반으로 "전략 + 개발 + 데이터"를 결합한 원스톱 전환 시스템 구축 서비스를 제공합니다.
+    </p>
+    <p style="font-size:9.5pt; color:rgba(255,255,255,0.8); line-height:1.8; margin-top:8px;">
       낮은 고정비(월 40만)와 MRR 모델로 <strong style="color:var(--accent);">Q1 내 BEP 달성</strong>, <strong style="color:var(--accent);">1년차 연 3,300만원 매출</strong>을 목표로 합니다.
     </p>
   </div>
