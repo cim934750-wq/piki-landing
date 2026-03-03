@@ -770,6 +770,97 @@ a {
     font-weight: 700;
 }
 
+/* ===== COMPARISON ===== */
+.comparison-section {
+    padding: 100px 0;
+    background: var(--bg-secondary);
+}
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+}
+.comparison-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.comparison-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.comparison-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+}
+.comparison-piki .comparison-badge {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+}
+.comparison-piki {
+    border-color: var(--primary);
+    box-shadow: 0 0 24px rgba(0,82,204,0.15);
+}
+.comparison-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: var(--text);
+}
+.comparison-piki h3 {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.comparison-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.comparison-others ul li {
+    font-size: 14px;
+    color: var(--text-muted);
+    padding-left: 20px;
+    position: relative;
+}
+.comparison-others ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+}
+.comparison-piki ul li {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 600;
+    padding-left: 24px;
+    position: relative;
+}
+.comparison-piki ul li::before {
+    content: '\2713';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+}
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ===== PROCESS ===== */
 .process {
     padding: 100px 0;

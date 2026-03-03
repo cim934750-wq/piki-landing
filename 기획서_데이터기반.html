@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>PIKI — 데이터 기반 사업 기획서</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --primary: #0052CC;
+    --primary-light: #e8f0fe;
+    --accent: #00C7B7;
+    --accent2: #7C3AED;
+    --dark: #111;
+    --gray-900: #1a1a2e;
+    --gray-700: #444;
+    --gray-500: #777;
+    --gray-300: #ccc;
+    --gray-100: #f5f6f8;
+    --red: #e74c3c;
+    --orange: #f39c12;
+    --green: #27ae60;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--dark);
+    line-height: 1.5;
+    font-size: 9pt;
+    background: #fff;
+  }
+
+  /* ── Page Layout ── */
+  .page {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto;
+    padding: 14mm 18mm 12mm;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--dark);
+    margin-bottom: 12px;
+    font-size: 7.5pt;
+    color: var(--gray-500);
+  }
+
+  .logo-text {
+    font-size: 13pt;
+    font-weight: 900;
+    color: var(--primary);
+    letter-spacing: -0.5px;
+  }
+
+  .page-foot {
+    position: absolute;
+    bottom: 8mm;
+    left: 18mm;
+    right: 18mm;
+    text-align: center;
+    font-size: 7pt;
+    color: var(--gray-300);
+  }
+
+  /* ── Cover ── */
+  .cover {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0a0f1e 0%, #111633 40%, #0d1a3a 100%);
+  }
+
+  .cover-top-bar {
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--accent2));
+  }
+
+  .cover-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50mm 30mm;
+    position: relative;
+  }
+
+  .cover-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .cover-glow {
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,82,204,0.15) 0%, transparent 70%);
+    top: 30%; left: 60%;
+  }
+
+  .cover-glow-2 {
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,199,183,0.1) 0%, transparent 70%);
+    top: 60%; left: 20%;
+  }
+
+  .cover-tag {
+    font-size: 8pt;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .cover-title {
+    font-size: 32pt;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -1px;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .cover-title span {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .cover-subtitle {
+    font-size: 12pt;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .cover-data-strip {
+    display: flex;
+    gap: 28px;
+    position: relative;
+  }
+
+  .cover-data-item {
+    text-align: left;
+  }
+
+  .cover-data-value {
+    font-size: 22pt;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .cover-data-label {
+    font-size: 7.5pt;
+    color: rgba(255,255,255,0.4);
+    margin-top: 2px;
+  }
+
+  .cover-meta {
+    position: absolute;
+    bottom: 20mm;
+    left: 30mm;
+    right: 30mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 8pt;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .cover-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* ── Typography ── */
+  h2 {
+    font-size: 12pt;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-size: 9pt;
+    font-weight: 800;
+  }
+
+  h3 {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 8px 0 5px;
+    padding-left: 8px;
+    border-left: 3px solid var(--primary);
+  }
+
+  h4 {
+    font-size: 9pt;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  p { font-size: 8.5pt; color: var(--gray-700); margin-bottom: 4px; }
+
+  /* ── Data Cards ── */
+  .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin: 6px 0; }
+  .data-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; margin: 6px 0; }
+  .data-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin: 6px 0; }
+
+  .data-card {
+    background: var(--gray-100);
+    border-radius: 8px;
+    padding: 10px 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .data-card-accent {
+    background: linear-gradient(135deg, var(--primary-light) 0%, #e0f2f1 100%);
+    border-left: 3px solid var(--primary);
+  }
+
+  .data-card-dark {
+    background: var(--gray-900);
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  .data-card-dark p { color: rgba(255,255,255,0.6); }
+  .data-card-dark h4 { color: #fff; }
+
+  .data-value {
+    font-size: 18pt;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1.1;
+  }
+
+  .data-value-sm {
+    font-size: 14pt;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .data-label {
+    font-size: 7.5pt;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+
+  .data-card-dark .data-value { color: var(--accent); }
+
+  /* ── Tables ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px 0 8px;
+    font-size: 8pt;
+  }
+
+  th {
+    background: var(--gray-900);
+    color: #fff;
+    padding: 5px 8px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 7.5pt;
+  }
+
+  th:first-child { border-radius: 6px 0 0 0; }
+  th:last-child { border-radius: 0 6px 0 0; }
+
+  td {
+    padding: 4px 8px;
+    border-bottom: 1px solid #eee;
+    font-size: 8pt;
+  }
+
+  tr:nth-child(even) td { background: #fafafa; }
+  tr:last-child td { border-bottom: none; }
+
+  .highlight-cell {
+    background: var(--primary-light) !important;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  /* ── Bar Charts ── */
+  .bar-chart { margin: 5px 0 8px; }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    gap: 6px;
+  }
+
+  .bar-label-text {
+    width: 100px;
+    font-size: 8pt;
+    font-weight: 500;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 18px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #fff;
+    transition: width 0.6s ease;
+  }
+
+  .bar-fill-primary { background: linear-gradient(90deg, var(--primary), #3b82f6); }
+  .bar-fill-accent { background: linear-gradient(90deg, var(--accent), #34d399); }
+  .bar-fill-purple { background: linear-gradient(90deg, var(--accent2), #a78bfa); }
+  .bar-fill-orange { background: linear-gradient(90deg, #f59e0b, #fb923c); }
+  .bar-fill-red { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+  .bar-value {
+    font-size: 8pt;
+    font-weight: 700;
+    width: 50px;
+    flex-shrink: 0;
+    color: var(--gray-700);
+  }
+
+  /* ── Donut Charts ── */
+  .donut-row { display: flex; gap: 12px; justify-content: center; margin: 6px 0; }
+
+  .donut-item { text-align: center; }
+
+  .donut {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 3px;
+  }
+
+  .donut-inner {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9pt;
+    font-weight: 800;
+    color: var(--dark);
+  }
+
+  .donut-label { font-size: 7.5pt; color: var(--gray-500); font-weight: 500; }
+
+  /* ── Funnel ── */
+  .funnel { margin: 10px 0; }
+
+  .funnel-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .funnel-bar {
+    height: 22px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 8pt;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .funnel-value {
+    font-size: 8.5pt;
+    font-weight: 700;
+    width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .funnel-drop {
+    font-size: 7pt;
+    color: var(--red);
+    font-weight: 600;
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  /* ── Comparison ── */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 10px;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .vs-label {
+    text-align: center;
+    font-size: 16pt;
+    font-weight: 900;
+    color: var(--gray-300);
+  }
+
+  .vs-card {
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .vs-card-bad {
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+  }
+
+  .vs-card-good {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+  }
+
+  /* ── Persona ── */
+  .persona-card {
+    background: var(--gray-100);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .persona-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16pt;
+    flex-shrink: 0;
+  }
+
+  .persona-info { flex: 1; }
+
+  .persona-tag {
+    display: inline-block;
+    font-size: 7pt;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+  }
+
+  .tag-blue { background: #dbeafe; color: #1d4ed8; }
+  .tag-green { background: #d1fae5; color: #065f46; }
+  .tag-purple { background: #ede9fe; color: #5b21b6; }
+  .tag-orange { background: #ffedd5; color: #c2410c; }
+
+  /* ── Timeline ── */
+  .roadmap {
+    display: flex;
+    gap: 0;
+    margin: 6px 0;
+  }
+
+  .roadmap-phase {
+    flex: 1;
+    padding: 7px 10px;
+    border-left: 3px solid var(--primary);
+    position: relative;
+  }
+
+  .roadmap-phase::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--primary);
+  }
+
+  .roadmap-quarter {
+    font-size: 8pt;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+
+  .roadmap-title {
+    font-size: 9pt;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .roadmap-items {
+    font-size: 7.5pt;
+    color: var(--gray-500);
+    line-height: 1.5;
+  }
+
+  /* ── Checklist ── */
+  .check-list {
+    list-style: none;
+    font-size: 8.5pt;
+  }
+
+  .check-list li {
+    padding: 2px 0 2px 16px;
+    position: relative;
+  }
+
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── Risk Matrix ── */
+  .risk-matrix {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin: 5px 0;
+  }
+
+  .risk-item {
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 8pt;
+  }
+
+  .risk-high { background: #fef2f2; border-left: 3px solid var(--red); }
+  .risk-mid { background: #fff7ed; border-left: 3px solid var(--orange); }
+  .risk-low { background: #f0fdf4; border-left: 3px solid var(--green); }
+
+  .risk-tag {
+    font-size: 7pt;
+    font-weight: 700;
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-bottom: 3px;
+  }
+
+  .risk-tag-high { background: #fecaca; color: #991b1b; }
+  .risk-tag-mid { background: #fed7aa; color: #9a3412; }
+  .risk-tag-low { background: #bbf7d0; color: #166534; }
+
+  /* ── Source / Caption ── */
+  .source {
+    font-size: 7pt;
+    color: var(--gray-300);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  .caption {
+    font-size: 7.5pt;
+    color: var(--gray-500);
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { margin: 0; }
+    .page { margin: 0; page-break-after: always; }
+    .cover { page-break-after: always; }
+  }
+
+  /* ── Separator ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gray-300), transparent);
+    margin: 8px 0;
+  }
+
+  /* ── Insight Box ── */
+  .insight-box {
+    background: linear-gradient(135deg, #f0f5ff 0%, #e8f4f8 100%);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 6px 0;
+    border-left: 4px solid var(--primary);
+  }
+
+  .insight-box h4 {
+    font-size: 9pt;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+
+  .insight-box p {
+    font-size: 8.5pt;
+    color: var(--gray-700);
+    margin: 0;
+  }
+
+  /* ── Pricing (inline) ── */
+  .pricing-inline {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 10px 0;
+  }
+
+  .price-box {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .price-box.best {
+    border: 2px solid var(--primary);
+    box-shadow: 0 4px 16px rgba(0,82,204,0.1);
+  }
+
+  .price-badge {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: #fff;
+    font-size: 7pt;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+  }
+
+  .price-name {
+    font-size: 10pt;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .price-amount {
+    font-size: 16pt;
+    font-weight: 900;
+    color: var(--primary);
+  }
+
+  .price-amount span {
+    font-size: 9pt;
+    font-weight: 500;
+    color: var(--gray-500);
+  }
+
+  .price-sub {
+    font-size: 7.5pt;
+    color: var(--gray-500);
+    margin: 4px 0 8px;
+  }
+
+  /* ── Flow Diagram ── */
+  .flow-horizontal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 10px 0;
+  }
+
+  .flow-node {
+    background: var(--gray-900);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .flow-node-accent {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+  }
+
+  .flow-arrow {
+    font-size: 12pt;
+    color: var(--gray-300);
+  }
+
+  /* ── Competitive positioning ── */
+  .position-map {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    position: relative;
+    margin: 10px 0;
+    background: #fafafa;
+  }
+
+  .axis-label-x {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 7pt;
+    color: var(--gray-500);
+  }
+
+  .axis-label-y {
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%) rotate(-90deg);
+    font-size: 7pt;
+    color: var(--gray-500);
+  }
+
+  .position-dot {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7pt;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  /* ── Summary Numbers ── */
+  .summary-strip {
+    display: flex;
+    gap: 0;
+    margin: 12px 0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .summary-item {
+    flex: 1;
+    padding: 10px 10px;
+    text-align: center;
+  }
+
+  .summary-item:nth-child(1) { background: var(--primary); color: #fff; }
+  .summary-item:nth-child(2) { background: #1d4ed8; color: #fff; }
+  .summary-item:nth-child(3) { background: #1e40af; color: #fff; }
+  .summary-item:nth-child(4) { background: var(--gray-900); color: #fff; }
+
+  .summary-num {
+    font-size: 15pt;
+    font-weight: 900;
+  }
+
+  .summary-text {
+    font-size: 7.5pt;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ COVER ═══════════════ -->
+<div class="cover">
+  <div class="cover-top-bar"></div>
+  <div class="cover-body">
+    <div class="cover-grid"></div>
+    <div class="cover-glow"></div>
+    <div class="cover-glow-2"></div>
+    <div class="cover-tag">DATA-DRIVEN BUSINESS PLAN</div>
+    <div class="cover-title">
+      <span>PIKI</span><br>
+      데이터 기반 사업 기획서
+    </div>
+    <div class="cover-subtitle">
+      소상공인 광고 전환 시스템 구축 서비스 · 풀스택 개발 파트너
+    </div>
+    <div class="cover-data-strip">
+      <div class="cover-data-item">
+        <div class="cover-data-value">1.2조</div>
+        <div class="cover-data-label">국내 웹 에이전시 시장 규모</div>
+      </div>
+      <div class="cover-data-item">
+        <div class="cover-data-value">78%</div>
+        <div class="cover-data-label">소상공인 디지털 전환 미달성</div>
+      </div>
+      <div class="cover-data-item">
+        <div class="cover-data-value">3~5x</div>
+        <div class="cover-data-label">전환율 개선 잠재력 (업계 벤치마크)</div>
+      </div>
+      <div class="cover-data-item">
+        <div class="cover-data-value">49만~</div>
+        <div class="cover-data-label">진입 가격대</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-meta">
+    <span>문서번호 PK-BP-2026-001</span>
+    <span>Version 1.0 · 2026.03</span>
+    <span>CONFIDENTIAL</span>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE 1 : 핵심 요약 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>데이터 기반 사업 기획서 — 01</span>
+  </div>
+
+  <h2><span class="num">1</span> Executive Summary</h2>
+
+  <div class="summary-strip">
+    <div class="summary-item">
+      <div class="summary-num">1.2조</div>
+      <div class="summary-text">TAM (시장 규모)</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">820억</div>
+      <div class="summary-text">SAM (소상공인 세그먼트)</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">3,300만</div>
+      <div class="summary-text">SOM (1년차 목표)</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">49만~</div>
+      <div class="summary-text">진입 가격대</div>
+    </div>
+  </div>
+
+  <h3>사업 개요</h3>
+  <div class="data-grid">
+    <div class="data-card">
+      <h4>문제 정의</h4>
+      <p>소상공인의 78%가 광고를 집행하지만, 전환 전용 랜딩페이지 없이 SNS 프로필 또는 블로그로 유입시키고 있음. 결과: 평균 전환율 1~2%, 광고비 대비 ROI 측정 불가.</p>
+    </div>
+    <div class="data-card">
+      <h4>솔루션</h4>
+      <p>PIKI는 광고 → 전환 랜딩 → 데이터 추적 → 리타겟팅으로 이어지는 전환 시스템을 풀스택으로 구축. 프론트+백엔드+데이터 분석까지 개발자가 직접 원스톱 제공.</p>
+    </div>
+  </div>
+
+  <h3>핵심 가치 제안 (Value Proposition)</h3>
+  <div class="flow-horizontal">
+    <div class="flow-node">광고 유입</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node flow-node-accent">전환 랜딩</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">데이터 추적</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">리타겟팅 · 재전환</div>
+  </div>
+  <p style="text-align:center; font-size:8pt; color:var(--gray-500);">기존: 광고 → SNS 프로필 (전환 측정 불가) → 광고비 낭비</p>
+
+  <h3>비즈니스 모델</h3>
+  <div class="data-grid-3">
+    <div class="data-card-dark">
+      <h4>일회 구축비</h4>
+      <div class="data-value-sm" style="color:var(--accent);">49~300만원</div>
+      <p>웹사이트/랜딩 + 서버 + 시스템</p>
+    </div>
+    <div class="data-card-dark">
+      <h4>월 관리비 (MRR)</h4>
+      <div class="data-value-sm" style="color:var(--accent);">9.9~19.9만/월</div>
+      <p>SNS 자동화 + 리포트 + 수정</p>
+    </div>
+    <div class="data-card-dark">
+      <h4>추가 개발 (확장)</h4>
+      <div class="data-value-sm" style="color:var(--accent);">별도 견적</div>
+      <p>결제연동 + API + 관리자 대시보드</p>
+    </div>
+  </div>
+
+  <h3>팀 구성</h3>
+  <table>
+    <tr><th>역할</th><th>담당</th><th>핵심 역량</th></tr>
+    <tr><td><strong>PM / 풀스택 개발</strong></td><td>PIKI 대표</td><td>바이브코딩 (Claude AI + VSCode), 풀스택, 서버 인프라</td></tr>
+    <tr><td><strong>기획 / 마케팅</strong></td><td>PIKI 대표 (겸임)</td><td>전환 UX 설계, GA4/GTM, 광고 추적 시스템</td></tr>
+    <tr><td><strong>디자인</strong></td><td>외부 협업 (필요 시)</td><td>UI/UX 시안, 브랜드 디자인</td></tr>
+  </table>
+
+  <div class="page-foot">PIKI Confidential · 01</div>
+</div>
+
+<!-- ═══════════════ PAGE 2 : 시장 분석 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>데이터 기반 사업 기획서 — 02</span>
+  </div>
+
+  <h2><span class="num">2</span> 시장 분석 (Market Analysis)</h2>
+
+  <h3>시장 규모 (TAM → SAM → SOM)</h3>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label-text">TAM (전체)</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-primary" style="width:100%;">1.2조원 · 웹 에이전시 전체 시장</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label-text">SAM (세그먼트)</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-accent" style="width:68%;">820억원 · 소상공인/중소기업 세그먼트</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label-text">SOM (1차 목표)</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-purple" style="width:3%;">3,300만</div></div>
+    </div>
+  </div>
+  <div class="source">* 시장 규모는 업계 추정치 기반. TAM/SAM은 자체 분석, SOM은 1년차 매출 시나리오 기준.</div>
+
+  <h3>소상공인 디지털 전환 현황 데이터</h3>
+  <div class="data-grid-4">
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value">78%</div>
+      <div class="data-label">온라인 광고 집행 중<br>but 전환 페이지 미보유</div>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value">62%</div>
+      <div class="data-label">광고 성과 측정<br>방법을 모름</div>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value">1.7%</div>
+      <div class="data-label">SNS 프로필 링크<br>평균 전환율</div>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value">340만</div>
+      <div class="data-label">국내 소상공인<br>사업체 수</div>
+    </div>
+  </div>
+  <div class="source">* 통계청 사업체 수 기반. 전환율·광고 집행 비율은 업계 추정치이며 공식 통계가 아닙니다.</div>
+
+  <h3>업종별 광고 벤치마크 데이터</h3>
+  <table>
+    <tr><th>업종</th><th>평균 CPC</th><th>전환율 (랜딩 미보유)</th><th>전환율 (최적화 랜딩)</th><th>CPA 절감 가능성</th></tr>
+    <tr><td>카페/음식점</td><td>500~1,200원</td><td class="highlight-cell">1~2%</td><td><strong>3~6%</strong></td><td>예상 40~60%</td></tr>
+    <tr><td>뷰티/네일샵</td><td>300~800원</td><td class="highlight-cell">2~3%</td><td><strong>5~8%</strong></td><td>예상 40~60%</td></tr>
+    <tr><td>스타트업/SaaS</td><td>1,000~3,000원</td><td class="highlight-cell">1~2%</td><td><strong>3~5%</strong></td><td>예상 35~50%</td></tr>
+    <tr><td>교육/학원</td><td>800~2,000원</td><td class="highlight-cell">1~3%</td><td><strong>4~7%</strong></td><td>예상 40~55%</td></tr>
+    <tr><td>피트니스/PT</td><td>400~1,000원</td><td class="highlight-cell">1~2%</td><td><strong>4~7%</strong></td><td>예상 40~60%</td></tr>
+  </table>
+  <div class="source">* Google Ads/WordStream 벤치마크 참고. 국내 시장 특화 수치가 아닌 글로벌 평균 기반 추정치입니다.</div>
+
+  <h3>시장 성장 트렌드</h3>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label-text">웹 에이전시</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-primary" style="width:85%;">연 12% 성장</div></div>
+      <div class="bar-value">1.2조</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label-text">소상공인 광고비</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-accent" style="width:90%;">연 18% 증가</div></div>
+      <div class="bar-value">4.3조</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label-text">노코드 플랫폼</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-orange" style="width:65%;">연 25% 성장 (위협)</div></div>
+      <div class="bar-value">3,200억</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label-text">전환 최적화 시장</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-purple" style="width:30%;">신규 블루오션</div></div>
+      <div class="bar-value">낮은 경쟁</div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h4>핵심 인사이트</h4>
+    <p>소상공인 340만 사업체 중 78%가 광고는 집행하지만 전환 시스템 없이 광고비를 낭비 중. 전환 최적화 전용 서비스 시장은 아직 블루오션 — 노코드 플랫폼이 확산되고 있으나, "전환 전략 + 풀스택 개발 + 데이터 추적"을 결합한 원스톱 서비스는 시장 내 공백.</p>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 02</div>
+</div>
+
+<!-- ═══════════════ PAGE 3 : 타겟 고객 분석 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>데이터 기반 사업 기획서 — 03</span>
+  </div>
+
+  <h2><span class="num">3</span> 타겟 고객 분석</h2>
+
+  <h3>고객 페르소나</h3>
+  <div class="data-grid">
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#dbeafe;">☕</div>
+      <div class="persona-info">
+        <h4>페르소나 A — 카페/음식점 사장님</h4>
+        <p style="font-size:8pt; margin:2px 0;">30대 · 월 광고비 30~80만원 · 인스타 위주 운영</p>
+        <div><span class="persona-tag tag-blue">전환 페이지 없음</span><span class="persona-tag tag-orange">ROAS 측정 불가</span></div>
+        <p style="font-size:8pt; margin:4px 0 0;"><strong>니즈:</strong> 광고 효과를 숫자로 보고 싶다</p>
+      </div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#ede9fe;">💅</div>
+      <div class="persona-info">
+        <h4>페르소나 B — 뷰티/네일샵 원장님</h4>
+        <p style="font-size:8pt; margin:2px 0;">20~30대 · 월 광고비 20~50만원 · DM 예약 의존</p>
+        <div><span class="persona-tag tag-purple">예약 자동화 필요</span><span class="persona-tag tag-green">프로필 링크만</span></div>
+        <p style="font-size:8pt; margin:4px 0 0;"><strong>니즈:</strong> DM 없이 자동으로 예약받고 싶다</p>
+      </div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#d1fae5;">🏋️</div>
+      <div class="persona-info">
+        <h4>페르소나 C — PT/피트니스 관장님</h4>
+        <p style="font-size:8pt; margin:2px 0;">30~40대 · 월 광고비 50~150만원 · 네이버+인스타 병행</p>
+        <div><span class="persona-tag tag-green">상담 전환 낮음</span><span class="persona-tag tag-blue">후기 활용 못함</span></div>
+        <p style="font-size:8pt; margin:4px 0 0;"><strong>니즈:</strong> 체험 신청 → 상담 전환 자동화</p>
+      </div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#ffedd5;">🚀</div>
+      <div class="persona-info">
+        <h4>페르소나 D — 초기 스타트업 대표</h4>
+        <p style="font-size:8pt; margin:2px 0;">20~30대 · 제품 MVP 있음 · 랜딩 + 결제 시스템 필요</p>
+        <div><span class="persona-tag tag-orange">개발 리소스 부족</span><span class="persona-tag tag-purple">빠른 출시 필요</span></div>
+        <p style="font-size:8pt; margin:4px 0 0;"><strong>니즈:</strong> 빠르고 저렴하게 웹 + 결제 시스템 구축</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>고객 전환 퍼널 (현재 vs PIKI 도입 후)</h3>
+  <div class="vs-grid">
+    <div class="vs-card vs-card-bad">
+      <h4 style="color:var(--red);">❌ 현재 (랜딩 없음)</h4>
+      <div class="funnel">
+        <div class="funnel-step">
+          <div class="funnel-bar bar-fill-red" style="width:100%;">광고 노출 10,000</div>
+          <div class="funnel-value">10,000</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-bar bar-fill-red" style="width:30%;">클릭 300</div>
+          <div class="funnel-value">300</div>
+          <div class="funnel-drop">▼ CTR 3%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-bar bar-fill-red" style="width:5%;">전환 5</div>
+          <div class="funnel-value">5건</div>
+          <div class="funnel-drop">▼ CVR 1.7%</div>
+        </div>
+      </div>
+      <p style="font-size:8pt; text-align:center; color:var(--red); font-weight:700;">CPA 60,000원 · ROAS 측정불가</p>
+    </div>
+    <div class="vs-label">VS</div>
+    <div class="vs-card vs-card-good">
+      <h4 style="color:var(--green);">✓ PIKI 도입 후</h4>
+      <div class="funnel">
+        <div class="funnel-step">
+          <div class="funnel-bar bar-fill-accent" style="width:100%;">광고 노출 10,000</div>
+          <div class="funnel-value">10,000</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-bar bar-fill-accent" style="width:30%;">클릭 300</div>
+          <div class="funnel-value">300</div>
+          <div class="funnel-drop" style="color:var(--gray-500);">CTR 3% (동일)</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-bar bar-fill-accent" style="width:15%;">전환 15</div>
+          <div class="funnel-value">15건</div>
+          <div class="funnel-drop" style="color:var(--green);">▲ CVR 5%</div>
+        </div>
+      </div>
+      <p style="font-size:8pt; text-align:center; color:var(--green); font-weight:700;">CPA 20,000원 · 67% 절감</p>
+    </div>
+  </div>
+  <div class="source">* 동일 광고비 30만원 기준 시뮬레이션. 업계 평균 벤치마크 데이터 기반 예상치이며, 실 운영 사례가 아닙니다.</div>
+
+  <div class="page-foot">PIKI Confidential · 03</div>
+</div>
+
+<!-- ═══════════════ PAGE 4 : 경쟁 분석 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>데이터 기반 사업 기획서 — 04</span>
+  </div>
+
+  <h2><span class="num">4</span> 경쟁 분석</h2>
+
+  <h3>경쟁사 포지셔닝 맵</h3>
+  <div class="position-map">
+    <div class="axis-label-x">서비스 범위 (좁음 → 넓음)</div>
+    <div class="axis-label-y">가격대 (낮음 → 높음)</div>
+    <div class="position-dot" style="background:var(--gray-300); bottom:70%; left:65%; width:44px; height:44px;">위시켓<br>크몽</div>
+    <div class="position-dot" style="background:#94a3b8; bottom:85%; right:12%; width:44px; height:44px;">대형<br>에이전시</div>
+    <div class="position-dot" style="background:var(--orange); bottom:25%; left:20%; width:44px; height:44px;">아임웹<br>식스샵</div>
+    <div class="position-dot" style="background:#e879f9; bottom:55%; left:25%; width:44px; height:44px;">Mirra<br>(AI SaaS)</div>
+    <div class="position-dot" style="background:var(--primary); bottom:40%; left:55%; width:48px; height:48px; font-size:8pt; border:2px solid var(--accent); box-shadow:0 0 12px rgba(0,82,204,0.3);">PIKI</div>
+  </div>
+
+  <table style="font-size:7.5pt;">
+    <tr><th>구분</th><th>PIKI</th><th>AI SaaS (Mirra 등)</th><th>노코드 (아임웹)</th><th>프리랜서 (크몽)</th><th>대형 에이전시</th></tr>
+    <tr><td>가격</td><td><strong>49~300만</strong></td><td>월 29~79만</td><td>월 1~5만</td><td>30~200만</td><td>500만~</td></tr>
+    <tr><td>전환 랜딩 구축</td><td class="highlight-cell">✓ 맞춤 개발</td><td>✗ (없음)</td><td>△ (템플릿)</td><td>△ (역량 편차)</td><td>✓</td></tr>
+    <tr><td>풀스택 개발</td><td class="highlight-cell">✓ AI 기반</td><td>✗ (SaaS만)</td><td>✗</td><td>△</td><td>✓</td></tr>
+    <tr><td>SNS 콘텐츠 자동화</td><td>✓ AI 생성</td><td class="highlight-cell">✓ 핵심 기능</td><td>✗</td><td>✗</td><td>△</td></tr>
+    <tr><td>데이터 추적</td><td class="highlight-cell">✓ 포함</td><td>△ (SNS만)</td><td>✗</td><td>✗</td><td>✓ (별도)</td></tr>
+    <tr><td>납기</td><td><strong>최단 7일</strong></td><td>즉시</td><td>즉시</td><td>7~30일</td><td>30~90일</td></tr>
+    <tr><td>소유권</td><td class="highlight-cell">✓ 완전 양도</td><td>✗ (구독 종속)</td><td>✗ (플랫폼 종속)</td><td>△</td><td>✓</td></tr>
+  </table>
+
+  <div class="insight-box">
+    <h4>PIKI vs Mirra — 핵심 차별점</h4>
+    <p><strong>Mirra</strong>는 SNS 콘텐츠 자동 생성 SaaS(월 29~79만)로, 콘텐츠 제작 시간 절약에 특화. 그러나 <strong>전환 랜딩페이지 구축, 백엔드 개발, 결제/예약 시스템</strong>은 불가. <strong>PIKI</strong>는 "광고 → 전환 랜딩 → 시스템 → 데이터 추적" 전체 퍼널을 직접 구축하며, 일회성 비용으로 코드 소유권 완전 양도. Mirra의 SNS 자동화 강점을 SERVICE 03에 흡수하여 전환 시스템 + 콘텐츠 자동화를 동시에 제공.</p>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 04</div>
+</div>
+
+<!-- ═══════════════ PAGE 5 : 서비스 구성 & 가격 전략 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>데이터 기반 사업 기획서 — 05</span>
+  </div>
+
+  <h2><span class="num">5</span> 서비스 구성 & 기술 스택</h2>
+
+  <h3>서비스 아키텍처</h3>
+  <div class="data-grid-3">
+    <div class="data-card" style="border-top:3px solid var(--primary);">
+      <h4 style="color:var(--primary);">SERVICE 01 · 프론트엔드</h4>
+      <p style="font-size:8pt; font-weight:600;">웹사이트 & 전환 랜딩</p>
+      <ul class="check-list">
+        <li>바이브코딩 (Claude AI + VSCode)</li>
+        <li>전환율 중심 UX/CTA 설계</li>
+        <li>반응형 (Desktop/Tablet/Mobile)</li>
+        <li>SEO 최적화 (메타태그/사이트맵)</li>
+        <li>인터랙션 & 애니메이션</li>
+      </ul>
+    </div>
+    <div class="data-card" style="border-top:3px solid var(--accent);">
+      <h4 style="color:var(--accent);">SERVICE 02 · 백엔드</h4>
+      <p style="font-size:8pt; font-weight:600;">서버 & 시스템 개발</p>
+      <ul class="check-list">
+        <li>AI 기반 풀스택 서버 구축</li>
+        <li>REST API 설계 & 개발</li>
+        <li>데이터베이스 설계 & 구축</li>
+        <li>결제 연동 (토스/카카오페이)</li>
+        <li>예약 시스템 · 관리자 대시보드</li>
+      </ul>
+    </div>
+    <div class="data-card" style="border-top:3px solid var(--accent2);">
+      <h4 style="color:var(--accent2);">SERVICE 03 · 데이터 & 운영</h4>
+      <p style="font-size:8pt; font-weight:600;">추적 · 자동화 · 리타겟팅</p>
+      <ul class="check-list">
+        <li>GA4 + GTM + 픽셀 세팅</li>
+        <li>ROAS/CAC 대시보드 구축</li>
+        <li>SNS 자동화 (AI 게시글 생성)</li>
+        <li>리타겟팅 캠페인 설계</li>
+        <li>월간 성과 리포트</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>기술 스택</h3>
+  <table>
+    <tr><th>영역</th><th>기술</th><th>선택 근거</th></tr>
+    <tr><td>개발 방식</td><td>바이브코딩 (Claude AI + VSCode)</td><td>AI 기반 초고속 풀스택 개발</td></tr>
+    <tr><td>프론트엔드</td><td>HTML/CSS/JS + 최적 프레임워크</td><td>프로젝트 특성에 맞게 유연 선택</td></tr>
+    <tr><td>백엔드</td><td>서버 + API (프로젝트별 최적 구성)</td><td>빠른 개발 + 확장성</td></tr>
+    <tr><td>데이터베이스</td><td>관계형/문서형 DB (프로젝트별 선택)</td><td>서비스 특성에 맞게 선택</td></tr>
+    <tr><td>인프라</td><td>클라우드 호스팅 (Vercel, AWS 등)</td><td>안정성 + 비용 효율</td></tr>
+    <tr><td>결제</td><td>토스페이먼츠, 카카오페이 API</td><td>국내 최다 사용 PG</td></tr>
+    <tr><td>분석</td><td>GA4, GTM, Meta/Google Pixel</td><td>업계 표준 추적 도구</td></tr>
+    <tr><td>자동화</td><td>n8n, Make, Claude AI API</td><td>SNS 자동화 + AI 콘텐츠</td></tr>
+  </table>
+
+  <div class="divider"></div>
+
+  <h2><span class="num">6</span> 가격 전략</h2>
+
+  <div class="pricing-inline">
+    <div class="price-box">
+      <div class="price-name">스타터</div>
+      <div class="price-amount">49<span>만원~</span></div>
+      <div class="price-sub">랜딩페이지 + 기본 시스템</div>
+      <ul class="check-list" style="text-align:left;">
+        <li>원페이지 반응형 랜딩/웹사이트</li>
+        <li>기본 폼 + GA4 세팅</li>
+        <li>서버 + 호스팅 + SSL</li>
+        <li>SEO 기본 설정</li>
+        <li>최단 7일 내 구축</li>
+        <li>1회 무료 수정 포함</li>
+      </ul>
+      <p style="font-size:7.5pt; color:var(--primary); margin-top:6px;">+ 월 관리 9.9만/월 (선택)</p>
+    </div>
+    <div class="price-box best">
+      <div class="price-badge">BEST</div>
+      <div class="price-name">프로</div>
+      <div class="price-amount">99<span>만원~</span></div>
+      <div class="price-sub">풀스택 개발 패키지</div>
+      <ul class="check-list" style="text-align:left;">
+        <li>멀티페이지 웹사이트/랜딩</li>
+        <li>백엔드 서버 + API + DB</li>
+        <li>결제/예약 시스템 연동</li>
+        <li>UTM + GA4 + 픽셀 풀 세팅</li>
+        <li>ROAS/CAC 대시보드</li>
+        <li>3회 무료 수정 포함</li>
+      </ul>
+      <p style="font-size:7.5pt; color:var(--primary); margin-top:6px;">+ 월 관리 19.9만/월 (선택)</p>
+    </div>
+    <div class="price-box">
+      <div class="price-name">그로스</div>
+      <div class="price-amount" style="font-size:16pt;">맞춤<span> 견적</span></div>
+      <div class="price-sub">풀스택 + 성장 시스템</div>
+      <ul class="check-list" style="text-align:left;">
+        <li>프로 전체 포함</li>
+        <li>관리자 대시보드 개발</li>
+        <li>SNS 자동화 + 리타겟팅</li>
+        <li>월간 성과 리포트</li>
+        <li>수정 무제한</li>
+      </ul>
+      <p style="font-size:7.5pt; color:var(--primary); margin-top:6px;">월 관리 포함</p>
+    </div>
+  </div>
+
+  <h3>가격 책정 근거</h3>
+  <div class="data-grid">
+    <div class="data-card">
+      <h4>경쟁사 대비 포지셔닝</h4>
+      <p>대형 에이전시(500만~) 대비 <strong>70~90% 저렴</strong>하면서 동일 퀄리티. 노코드 플랫폼(월 1~5만) 대비 <strong>전략+개발+데이터</strong> 결합 가치 제공.</p>
+    </div>
+    <div class="data-card">
+      <h4>고객 ROI 시뮬레이션</h4>
+      <p>구축비 49만원 + 월 광고비 30만원 집행 시, 월 10건 추가 전환 × 객단가 3만원 = <strong>월 30만원 추가 매출</strong>. 투자 회수: <strong>약 2개월</strong>. (광고비 별도)</p>
+    </div>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 05</div>
+</div>
+
+<!-- ═══════════════ PAGE 6 : 수익 모델 & 재무 계획 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>데이터 기반 사업 기획서 — 06</span>
+  </div>
+
+  <h2><span class="num">7</span> 수익 모델 & 재무 계획</h2>
+
+  <h3>수익 구조</h3>
+  <div class="data-grid-3">
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm">70%</div>
+      <div class="data-label">일회 구축비 (초기 매출)</div>
+      <p style="font-size:7.5pt;">프로젝트당 49~300만원</p>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm">25%</div>
+      <div class="data-label">월 관리비 (반복 매출 · MRR)</div>
+      <p style="font-size:7.5pt;">고객당 9.9~29.9만/월</p>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm">5%</div>
+      <div class="data-label">추가 개발 (업셀)</div>
+      <p style="font-size:7.5pt;">결제연동, API, 대시보드 등</p>
+    </div>
+  </div>
+
+  <h3>1년차 매출 시나리오</h3>
+  <table>
+    <tr><th>분기</th><th>신규 고객</th><th>누적 MRR 고객</th><th>구축비 매출</th><th>MRR 매출</th><th>분기 합계</th></tr>
+    <tr><td><strong>Q1 (1~3월)</strong></td><td>3건</td><td>2명</td><td>250만</td><td>40만</td><td><strong>290만</strong></td></tr>
+    <tr><td><strong>Q2 (4~6월)</strong></td><td>5건</td><td>5명</td><td>420만</td><td>150만</td><td><strong>570만</strong></td></tr>
+    <tr><td><strong>Q3 (7~9월)</strong></td><td>7건</td><td>9명</td><td>600만</td><td>360만</td><td><strong>960만</strong></td></tr>
+    <tr><td><strong>Q4 (10~12월)</strong></td><td>10건</td><td>14명</td><td>850만</td><td>630만</td><td class="highlight-cell"><strong>1,480만</strong></td></tr>
+    <tr style="background:#f0f5ff;"><td colspan="2"><strong>연간 합계</strong></td><td><strong>25건</strong></td><td><strong>2,120만</strong></td><td><strong>1,180만</strong></td><td class="highlight-cell"><strong>3,300만</strong></td></tr>
+  </table>
+  <div class="source">* 보수적 시나리오 기준. MRR 전환율 50%, 평균 구축비 85만원, 평균 월관리 15만원 가정.</div>
+
+  <h3>월별 MRR 성장 예측</h3>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label-text">1월</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-primary" style="width:5%;"></div></div>
+      <div class="bar-value">10만</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label-text">3월</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-primary" style="width:10%;">40만</div></div>
+      <div class="bar-value">40만</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label-text">6월</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-primary" style="width:25%;">100만</div></div>
+      <div class="bar-value">100만</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label-text">9월</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-accent" style="width:50%;">200만</div></div>
+      <div class="bar-value">200만</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label-text">12월</div>
+      <div class="bar-track"><div class="bar-fill bar-fill-accent" style="width:80%;">350만</div></div>
+      <div class="bar-value">350만</div>
+    </div>
+  </div>
+
+  <h3>비용 구조 (월간)</h3>
+  <div class="data-grid">
+    <div class="data-card">
+      <h4>고정비</h4>
+      <table style="margin:4px 0;">
+        <tr><td>서버 인프라 (AWS/Vercel)</td><td style="text-align:right;"><strong>5~15만</strong></td></tr>
+        <tr><td>도메인 + SSL</td><td style="text-align:right;"><strong>1만</strong></td></tr>
+        <tr><td>SaaS 도구 (분석/자동화)</td><td style="text-align:right;"><strong>5~10만</strong></td></tr>
+        <tr><td>마케팅 (자사 광고)</td><td style="text-align:right;"><strong>10~30만</strong></td></tr>
+        <tr style="background:#f0f5ff;"><td><strong>합계</strong></td><td style="text-align:right;"><strong>21~56만/월</strong></td></tr>
+      </table>
+    </div>
+    <div class="data-card">
+      <h4>손익분기점 (BEP)</h4>
+      <div class="data-value" style="font-size:28pt; margin:6px 0;">3건</div>
+      <p>월 고정비 약 40만원 기준,<br>스타터 1건 + 월관리 2건이면 BEP 달성.</p>
+      <p style="font-size:8pt; font-weight:600; color:var(--green);">→ Q1 내 BEP 도달 목표</p>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h4>재무 핵심 포인트</h4>
+    <p>1인 운영 → 인건비 없이 시작 가능. 고정비가 월 40만 수준으로 매우 낮아 BEP가 빠름. MRR(월 반복 매출)이 누적될수록 안정적 수익 구조 확보. 1년차 목표: 연 3,300만원 매출, 월 MRR 350만원.</p>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 06</div>
+</div>
+
+<!-- ═══════════════ PAGE 7 : KPI & 성과 지표 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>데이터 기반 사업 기획서 — 07</span>
+  </div>
+
+  <h2><span class="num">8</span> 핵심 성과 지표 (KPI)</h2>
+
+  <h3>사업 KPI 대시보드</h3>
+  <div class="donut-row">
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(var(--primary) 0% 60%, #e8e8e8 60% 100%);"><div class="donut-inner">25건</div></div>
+      <div class="donut-label">연간 신규 고객</div>
+    </div>
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(var(--accent) 0% 70%, #e8e8e8 70% 100%);"><div class="donut-inner">350만</div></div>
+      <div class="donut-label">목표 월 MRR</div>
+    </div>
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(var(--accent2) 0% 80%, #e8e8e8 80% 100%);"><div class="donut-inner">80%</div></div>
+      <div class="donut-label">고객 만족도</div>
+    </div>
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(var(--green) 0% 50%, #e8e8e8 50% 100%);"><div class="donut-inner">50%</div></div>
+      <div class="donut-label">MRR 전환율</div>
+    </div>
+    <div class="donut-item">
+      <div class="donut" style="background:conic-gradient(var(--orange) 0% 40%, #e8e8e8 40% 100%);"><div class="donut-inner">30%</div></div>
+      <div class="donut-label">추천 유입률</div>
+    </div>
+  </div>
+
+  <h3>단계별 KPI 목표</h3>
+  <table>
+    <tr><th>지표</th><th>Q1 목표</th><th>Q2 목표</th><th>Q3 목표</th><th>Q4 목표</th><th>측정 방법</th></tr>
+    <tr><td>신규 고객 수</td><td>3건</td><td>5건</td><td>7건</td><td>10건</td><td>CRM 기록</td></tr>
+    <tr><td>월 MRR</td><td>40만</td><td>100만</td><td>200만</td><td class="highlight-cell">350만</td><td>매출 대장</td></tr>
+    <tr><td>고객 만족도</td><td>70%</td><td>75%</td><td>80%</td><td>80%+</td><td>NPS 설문</td></tr>
+    <tr><td>납품 기간 준수율</td><td>80%</td><td>85%</td><td>90%</td><td>90%+</td><td>프로젝트 관리</td></tr>
+    <tr><td>웹사이트 문의 전환율</td><td>3%</td><td>4%</td><td>5%</td><td>5%+</td><td>GA4 이벤트</td></tr>
+    <tr><td>고객 추천 유입률</td><td>10%</td><td>15%</td><td>25%</td><td>30%</td><td>유입 경로 추적</td></tr>
+  </table>
+
+  <h3>납품물 품질 KPI</h3>
+  <div class="data-grid-4">
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm" style="color:var(--primary);">90+</div>
+      <div class="data-label">Lighthouse<br>Performance 점수</div>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm" style="color:var(--accent);">3초↓</div>
+      <div class="data-label">페이지<br>로딩 속도</div>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm" style="color:var(--accent2);">5%+</div>
+      <div class="data-label">문의 폼<br>전환율</div>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm" style="color:var(--green);">40%↓</div>
+      <div class="data-label">평균<br>이탈률</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2><span class="num">9</span> 로드맵 & 마일스톤</h2>
+
+  <div class="roadmap">
+    <div class="roadmap-phase">
+      <div class="roadmap-quarter">Q1 · 진입기</div>
+      <div class="roadmap-title">MVP & 첫 고객</div>
+      <div class="roadmap-items">
+        ▸ 자사 랜딩페이지 런칭<br>
+        ▸ 포트폴리오 3건 확보<br>
+        ▸ 첫 MRR 고객 확보<br>
+        ▸ 워크플로우 표준화
+      </div>
+    </div>
+    <div class="roadmap-phase" style="border-left-color:var(--accent);">
+      <div class="roadmap-quarter" style="color:var(--accent);">Q2 · 성장기</div>
+      <div class="roadmap-title">고객 확대 & 프로세스</div>
+      <div class="roadmap-items">
+        ▸ 월 2건 이상 신규 수주<br>
+        ▸ 템플릿 시스템 구축<br>
+        ▸ SNS 자동화 서비스 론칭<br>
+        ▸ 추천 프로그램 시작
+      </div>
+    </div>
+    <div class="roadmap-phase" style="border-left-color:var(--accent2);">
+      <div class="roadmap-quarter" style="color:var(--accent2);">Q3 · 안정기</div>
+      <div class="roadmap-title">MRR 본격화</div>
+      <div class="roadmap-items">
+        ▸ MRR 200만 돌파<br>
+        ▸ 결제/예약 연동 서비스 추가<br>
+        ▸ 사례 기반 마케팅 시작<br>
+        ▸ 파트타임 디자이너 협업
+      </div>
+    </div>
+    <div class="roadmap-phase" style="border-left-color:var(--orange);">
+      <div class="roadmap-quarter" style="color:var(--orange);">Q4 · 확장기</div>
+      <div class="roadmap-title">수익 안정화</div>
+      <div class="roadmap-items">
+        ▸ MRR 350만 목표<br>
+        ▸ 업종별 특화 패키지<br>
+        ▸ SaaS형 대시보드 검토<br>
+        ▸ 2년차 전략 수립
+      </div>
+    </div>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 07</div>
+</div>
+
+<!-- ═══════════════ PAGE 8 : 리스크 & 마케팅 전략 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>데이터 기반 사업 기획서 — 08</span>
+  </div>
+
+  <h2><span class="num">10</span> 리스크 분석 & 대응 전략</h2>
+
+  <div class="risk-matrix">
+    <div class="risk-item risk-high">
+      <div class="risk-tag risk-tag-high">HIGH</div>
+      <h4>1인 운영 병목</h4>
+      <p style="font-size:8pt;">동시 프로젝트 3건 이상 시 납기 지연 위험</p>
+      <p style="font-size:7.5pt; color:var(--primary); font-weight:600;">▸ 대응: 프로젝트 상한 2건/동시 · 템플릿 재활용 · 긴급 시 프리랜서 협업</p>
+    </div>
+    <div class="risk-item risk-high">
+      <div class="risk-tag risk-tag-high">HIGH</div>
+      <h4>초기 포트폴리오 부족</h4>
+      <p style="font-size:8pt;">실적 없이 신뢰 확보 어려움</p>
+      <p style="font-size:7.5pt; color:var(--primary); font-weight:600;">▸ 대응: 첫 3건 할인 프로모션 · 자사 사이트를 포트폴리오화 · 지인 레퍼런스</p>
+    </div>
+    <div class="risk-item risk-mid">
+      <div class="risk-tag risk-tag-mid">MEDIUM</div>
+      <h4>노코드 플랫폼 확산</h4>
+      <p style="font-size:8pt;">아임웹, 식스샵 등이 기본 기능 커버</p>
+      <p style="font-size:7.5pt; color:var(--primary); font-weight:600;">▸ 대응: "전략+개발+데이터" 결합 가치 강조 · 노코드로 불가능한 영역 특화</p>
+    </div>
+    <div class="risk-item risk-mid">
+      <div class="risk-tag risk-tag-mid">MEDIUM</div>
+      <h4>가격 경쟁 심화</h4>
+      <p style="font-size:8pt;">프리랜서/저가 에이전시와의 가격 전쟁</p>
+      <p style="font-size:7.5pt; color:var(--primary); font-weight:600;">▸ 대응: 가격이 아닌 "성과 기반" 포지셔닝 · MRR 수익으로 구축비 유연화</p>
+    </div>
+    <div class="risk-item risk-low">
+      <div class="risk-tag risk-tag-low">LOW</div>
+      <h4>기술 트렌드 변화</h4>
+      <p style="font-size:8pt;">프레임워크/도구 변경에 따른 학습 비용</p>
+      <p style="font-size:7.5pt; color:var(--primary); font-weight:600;">▸ 대응: 기초 기술(HTML/CSS/JS) 위주 · 필요 시 최신 스택 점진 도입</p>
+    </div>
+    <div class="risk-item risk-low">
+      <div class="risk-tag risk-tag-low">LOW</div>
+      <h4>고객 이탈 (MRR)</h4>
+      <p style="font-size:8pt;">월 관리 해지로 MRR 감소</p>
+      <p style="font-size:7.5pt; color:var(--primary); font-weight:600;">▸ 대응: 3개월 최소 계약 · 월간 성과 리포트로 가치 시각화 · 이탈 사전 감지</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2><span class="num">11</span> 마케팅 & 고객 획득 전략</h2>
+
+  <h3>채널별 고객 획득 전략</h3>
+  <table>
+    <tr><th>채널</th><th>전략</th><th>예상 CAC</th><th>우선순위</th></tr>
+    <tr><td><strong>자사 랜딩페이지</strong></td><td>SEO + 메타/구글 광고 → 무료 진단 전환</td><td>5~10만원</td><td class="highlight-cell">★★★</td></tr>
+    <tr><td><strong>추천 프로그램</strong></td><td>기존 고객 추천 시 다음 월관리 1개월 무료</td><td>0원</td><td class="highlight-cell">★★★</td></tr>
+    <tr><td><strong>인스타그램 DM</strong></td><td>광고 중인 소상공인 직접 아웃바운드</td><td>0원 (노동비)</td><td>★★☆</td></tr>
+    <tr><td><strong>블로그/콘텐츠</strong></td><td>광고 효율 개선 사례·팁 콘텐츠 발행</td><td>3~5만원</td><td>★★☆</td></tr>
+    <tr><td><strong>커뮤니티</strong></td><td>소상공인 커뮤니티 활동, 무료 진단 제안</td><td>0원</td><td>★☆☆</td></tr>
+  </table>
+
+  <h3>고객 획득 퍼널</h3>
+  <div class="flow-horizontal">
+    <div class="flow-node">인지<br><span style="font-size:7pt; opacity:0.6;">광고/콘텐츠</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">관심<br><span style="font-size:7pt; opacity:0.6;">랜딩 방문</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node flow-node-accent">전환<br><span style="font-size:7pt; opacity:0.8;">무료 진단 신청</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">계약<br><span style="font-size:7pt; opacity:0.6;">구축비 납부</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">유지<br><span style="font-size:7pt; opacity:0.6;">월관리 전환</span></div>
+  </div>
+
+  <div class="data-grid-3" style="margin-top:8px;">
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm">5%</div>
+      <div class="data-label">랜딩 방문 → 진단 신청<br>전환율 목표</div>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm">40%</div>
+      <div class="data-label">진단 신청 → 계약<br>전환율 목표</div>
+    </div>
+    <div class="data-card" style="text-align:center;">
+      <div class="data-value-sm">60%</div>
+      <div class="data-label">구축 완료 → 월관리<br>MRR 전환율 목표</div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h4>핵심 전략</h4>
+    <p>"무료 광고 효율 진단"을 리드 마그넷으로 활용 → 진단 과정에서 현재 문제점을 시각화 → 자연스러운 구축 제안. 초기에는 아웃바운드(DM) + 추천 중심, Q3부터 콘텐츠 마케팅으로 인바운드 전환.</p>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 08</div>
+</div>
+
+<!-- ═══════════════ PAGE 9 : SWOT & 결론 ═══════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="logo-text">PIKI</span>
+    <span>데이터 기반 사업 기획서 — 09</span>
+  </div>
+
+  <h2><span class="num">12</span> SWOT 분석</h2>
+
+  <div class="data-grid">
+    <div class="data-card" style="background:#eff6ff; border-left:4px solid var(--primary);">
+      <h4 style="color:var(--primary);">💪 Strengths (강점)</h4>
+      <ul class="check-list" style="font-size:8.5pt;">
+        <li>바이브코딩(AI) 기반 초고속 풀스택 개발</li>
+        <li>기획~개발~배포~운영 원스톱 서비스</li>
+        <li>합리적 가격대 (에이전시 대비 70~90% 저렴)</li>
+        <li>낮은 고정비 → 빠른 BEP · 높은 마진</li>
+        <li>데이터 추적 시스템 내장 (경쟁사 대비 차별화)</li>
+      </ul>
+    </div>
+    <div class="data-card" style="background:#fef2f2; border-left:4px solid var(--red);">
+      <h4 style="color:var(--red);">⚠️ Weaknesses (약점)</h4>
+      <ul class="check-list" style="font-size:8.5pt;">
+        <li>1인 운영 → 동시 프로젝트 한계 (최대 2건)</li>
+        <li>포트폴리오 규모 제한적 (초기)</li>
+        <li>디자인 전문 인력 부재 (외부 협업 필요)</li>
+        <li>브랜드 인지도 제로에서 시작</li>
+        <li>마케팅 전문성 부족 (개발 중심)</li>
+      </ul>
+    </div>
+    <div class="data-card" style="background:#f0fdf4; border-left:4px solid var(--green);">
+      <h4 style="color:var(--green);">🚀 Opportunities (기회)</h4>
+      <ul class="check-list" style="font-size:8.5pt;">
+        <li>소상공인 디지털 전환 수요 연 18% 증가</li>
+        <li>전환 최적화 전문 서비스 시장 블루오션</li>
+        <li>AI 기반 자동화 도구 → 1인 생산성 극대화</li>
+        <li>MRR 모델 → 안정적 수익 구조 가능</li>
+        <li>추천 기반 성장 → CAC 제로 확장</li>
+      </ul>
+    </div>
+    <div class="data-card" style="background:#fff7ed; border-left:4px solid var(--orange);">
+      <h4 style="color:var(--orange);">🔥 Threats (위협)</h4>
+      <ul class="check-list" style="font-size:8.5pt;">
+        <li>노코드 플랫폼 확산 (아임웹, 식스샵)</li>
+        <li>대형 에이전시 하향 진출</li>
+        <li>프리랜서 시장 가격 경쟁 심화</li>
+        <li>AI 코딩 도구 → 진입 장벽 하락</li>
+        <li>경기 침체 시 소상공인 투자 축소</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2><span class="num">13</span> 결론 & Next Steps</h2>
+
+  <div class="data-card-dark" style="margin:10px 0; border-radius:12px; padding:20px;">
+    <h4 style="font-size:12pt; margin-bottom:8px;">핵심 메시지</h4>
+    <p style="font-size:9.5pt; color:rgba(255,255,255,0.8); line-height:1.8;">
+      PIKI는 <strong style="color:var(--accent);">소상공인 340만 사업체</strong> 중 광고는 집행하지만 전환 시스템이 없는 <strong style="color:var(--accent);">78%</strong>를 타겟으로,<br>
+      <strong style="color:#fff;">풀스택 개발 역량</strong>을 기반으로 "전략 + 개발 + 데이터"를 결합한 원스톱 전환 시스템 구축 서비스를 제공합니다.<br><br>
+      낮은 고정비(월 40만)와 MRR 모델로 <strong style="color:var(--accent);">Q1 내 BEP 달성</strong>, <strong style="color:var(--accent);">1년차 연 3,300만원 매출</strong>을 목표로 합니다.
+    </p>
+  </div>
+
+  <h3>즉시 실행 항목 (Next Steps)</h3>
+  <table>
+    <tr><th>순서</th><th>항목</th><th>기한</th><th>산출물</th></tr>
+    <tr><td>1</td><td>자사 랜딩페이지 런칭 & 광고 세팅</td><td>D+3</td><td>랜딩 URL, 광고 캠페인</td></tr>
+    <tr><td>2</td><td>무료 진단 5건 아웃바운드</td><td>D+7</td><td>진단 리포트 5건</td></tr>
+    <tr><td>3</td><td>첫 고객 계약 & 포트폴리오 확보</td><td>D+14</td><td>계약서, 납품물</td></tr>
+    <tr><td>4</td><td>추천 프로그램 설계</td><td>D+21</td><td>추천 정책 문서</td></tr>
+    <tr><td>5</td><td>콘텐츠 마케팅 시작 (블로그 2편/월)</td><td>D+30</td><td>블로그 포스트</td></tr>
+  </table>
+
+  <div style="margin-top:20px; text-align:center;">
+    <div style="display:inline-block; padding:12px 30px; background:linear-gradient(135deg, var(--primary), var(--accent)); color:#fff; border-radius:8px; font-size:10pt; font-weight:700;">
+      PIKI — 광고비 낭비를 줄이는 전환 시스템 전문 파트너
+    </div>
+    <p style="margin-top:8px; font-size:8pt; color:var(--gray-500);">데이터 기반 무료 진단 제공 · 랜딩페이지에서 문의 가능</p>
+  </div>
+
+  <div class="page-foot">PIKI Confidential · 09</div>
+</div>
+
+</body>
+</html>
