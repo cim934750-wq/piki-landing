@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 
 const faqs = [
@@ -26,6 +26,53 @@ const faqs = [
   },
 ]
 
+function FaqItem({ faq, isOpen, onToggle, index }: {
+  faq: { q: string; a: string }
+  isOpen: boolean
+  onToggle: () => void
+  index: number
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.opacity = '1'
+          el.style.transform = 'translateY(0)'
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      className={`faq-item${isOpen ? ' open' : ''}`}
+      style={{
+        opacity: 0,
+        transform: 'translateY(10px)',
+        transition: 'opacity 0.6s ease, transform 0.6s ease',
+        transitionDelay: `${index * 80}ms`,
+      }}
+    >
+      <button className="faq-question" onClick={onToggle}>
+        <span>{faq.q}</span>
+        <span className="faq-arrow">&#9660;</span>
+      </button>
+      <div className="faq-answer">
+        <p>{faq.a}</p>
+      </div>
+    </div>
+  )
+}
+
 export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
@@ -39,15 +86,13 @@ export default function FaqSection() {
         </ScrollReveal>
         <div className="faq-list">
           {faqs.map((faq, i) => (
-            <ScrollReveal key={i} className={`faq-item${openIndex === i ? ' open' : ''}`}>
-              <button className="faq-question" onClick={() => setOpenIndex(openIndex === i ? null : i)}>
-                <span>{faq.q}</span>
-                <span className="faq-arrow">&#9660;</span>
-              </button>
-              <div className="faq-answer">
-                <p>{faq.a}</p>
-              </div>
-            </ScrollReveal>
+            <FaqItem
+              key={i}
+              faq={faq}
+              index={i}
+              isOpen={openIndex === i}
+              onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+            />
           ))}
         </div>
       </div>
