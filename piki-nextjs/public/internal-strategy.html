@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>PIKI — 내부 전략 기획서</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --primary: #0052CC;
+    --accent: #00C7B7;
+    --accent2: #7C3AED;
+    --dark: #0a0f1e;
+    --gray-900: #1a1a2e;
+    --gray-700: #444;
+    --gray-500: #777;
+    --gray-300: #ccc;
+    --gray-100: #f5f6f8;
+    --red: #e74c3c;
+    --green: #27ae60;
+    --orange: #f39c12;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #222;
+    line-height: 1.6;
+    font-size: 10pt;
+    background: #e8e8e8;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .page {
+    width: 210mm; height: 297mm; margin: 10mm auto;
+    padding: 16mm 20mm 14mm;
+    page-break-after: always; position: relative; overflow: hidden;
+    background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+  }
+  .page::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+  }
+  .page-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 10px; border-bottom: 2px solid var(--dark);
+    margin-bottom: 16px; font-size: 8.5pt; color: var(--gray-500);
+  }
+  .logo-text { font-size: 13pt; font-weight: 900; color: var(--primary); }
+  .page-foot {
+    position: absolute; bottom: 8mm; left: 18mm; right: 18mm;
+    display: flex; justify-content: space-between;
+    font-size: 7.5pt; color: var(--gray-300);
+  }
+
+  /* Cover */
+  .cover {
+    width: 210mm; min-height: 297mm; margin: 10mm auto;
+    display: flex; flex-direction: column;
+    page-break-after: always; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #0a0f1e 0%, #111633 40%, #0d1a3a 100%);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+  }
+  .cover-top { height: 5px; background: linear-gradient(90deg, var(--primary), var(--accent), var(--accent2)); }
+  .cover-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .cover-glow { position: absolute; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(0,82,204,0.15) 0%, transparent 70%); top: 25%; left: 60%; }
+  .cover-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 50mm 30mm; position: relative; }
+  .cover-tag { font-size: 8pt; font-weight: 600; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+  .cover-title { font-size: 34pt; font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1.25; margin-bottom: 12px; }
+  .cover-title span { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .cover-sub { font-size: 12pt; color: rgba(255,255,255,0.5); margin-bottom: 40px; }
+  .cover-data { display: flex; gap: 28px; position: relative; }
+  .cover-data-val { font-size: 22pt; font-weight: 800; color: #fff; }
+  .cover-data-lbl { font-size: 7.5pt; color: rgba(255,255,255,0.4); margin-top: 2px; }
+  .cover-meta { position: absolute; bottom: 20mm; left: 30mm; right: 30mm; display: flex; justify-content: space-between; font-size: 8pt; color: rgba(255,255,255,0.3); }
+
+  /* Typography */
+  h2 { font-size: 13pt; font-weight: 800; color: var(--dark); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: var(--primary); color: #fff; font-size: 10pt; font-weight: 800; }
+  h3 { font-size: 10.5pt; font-weight: 700; color: var(--gray-900); margin: 14px 0 8px; padding-left: 10px; border-left: 3px solid var(--primary); }
+  h4 { font-size: 9.5pt; font-weight: 700; margin-bottom: 3px; }
+  p { font-size: 9pt; color: var(--gray-700); margin-bottom: 4px; line-height: 1.65; }
+
+  .big-quote { font-size: 14pt; font-weight: 800; color: var(--dark); line-height: 1.5; margin: 14px 0; padding: 14px 18px; border-left: 4px solid var(--primary); background: linear-gradient(90deg, rgba(0,82,204,0.04), transparent); }
+  .big-quote em { font-style: normal; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* Grids & Cards */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 8px 0; }
+  .g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin: 8px 0; }
+  .card { background: var(--gray-100); border-radius: 10px; padding: 12px 14px; }
+  .card-a { background: linear-gradient(135deg, rgba(0,82,204,0.06), rgba(0,199,183,0.06)); border-left: 3px solid var(--primary); }
+  .card-d { background: var(--gray-900); color: #fff; border-radius: 10px; padding: 14px 16px; }
+  .card-d p { color: rgba(255,255,255,0.6); } .card-d h4 { color: #fff; }
+  .vl { font-size: 20pt; font-weight: 900; color: var(--primary); line-height: 1.1; }
+  .vm { font-size: 14pt; font-weight: 800; color: var(--primary); }
+  .vs { font-size: 8.5pt; color: var(--gray-500); margin-top: 3px; }
+  .card-d .vl, .card-d .vm { color: var(--accent); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 8.5pt; }
+  th { background: var(--gray-900); color: #fff; padding: 6px 8px; text-align: left; font-weight: 600; }
+  td { padding: 5px 8px; border-bottom: 1px solid #eee; }
+  .card, .card-a, .card-d { overflow-wrap: break-word; }
+  .flow-n { overflow-wrap: break-word; min-width: 0; }
+  tr:nth-child(even) td { background: #fafafa; }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 600; }
+  .tag-b { background: rgba(0,82,204,0.1); color: var(--primary); }
+  .tag-g { background: rgba(39,174,96,0.1); color: var(--green); }
+  .tag-r { background: rgba(231,76,60,0.1); color: var(--red); }
+  .tag-o { background: rgba(243,156,18,0.1); color: var(--orange); }
+
+  /* Bar chart */
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .bar-lbl { width: 80px; font-size: 8pt; font-weight: 600; text-align: right; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 24px; background: var(--gray-100); border-radius: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; display: flex; align-items: center; padding-left: 10px; font-size: 7.5pt; font-weight: 600; color: #fff; border-radius: 6px; }
+  .bar-p { background: var(--primary); } .bar-a { background: var(--accent); } .bar-v { background: var(--accent2); }
+
+  .src { font-size: 7pt; color: var(--gray-300); margin-top: 4px; font-style: italic; }
+
+  .flow-h { display: flex; align-items: center; gap: 4px; margin: 10px 0; }
+  .flow-n { background: var(--gray-100); padding: 8px 10px; border-radius: 8px; font-size: 8.5pt; font-weight: 600; text-align: center; flex: 1; }
+  .flow-c { background: var(--primary); color: #fff; }
+  .flow-arr { font-size: 11pt; color: var(--primary); font-weight: 700; flex: 0; }
+
+  @page { size: 210mm 297mm; margin: 0; }
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; height: 297mm; width: 210mm; overflow: hidden; }
+    .cover { margin: 0; box-shadow: none; height: 297mm; width: 210mm; overflow: hidden; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-top"></div>
+  <div class="cover-body">
+    <div class="cover-grid"></div>
+    <div class="cover-glow"></div>
+    <div class="cover-tag">INTERNAL STRATEGY DOCUMENT</div>
+    <div class="cover-title"><span>PIKI</span><br>내부 전략 기획서</div>
+    <div class="cover-sub">소상공인 광고 전환 시스템 구축 서비스</div>
+    <div class="cover-data">
+      <div><div class="cover-data-val">340만</div><div class="cover-data-lbl">국내 소상공인 사업체 수 (통계청)</div></div>
+      <div><div class="cover-data-val">1인</div><div class="cover-data-lbl">풀스택 운영 · 고정비 최소</div></div>
+      <div><div class="cover-data-val">MRR</div><div class="cover-data-lbl">구독형 반복 수익 구조</div></div>
+    </div>
+  </div>
+  <div class="cover-meta">
+    <span>PK-IS-2026-001</span>
+    <span>Version 1.0 · 2026.03</span>
+    <span>CONFIDENTIAL</span>
+  </div>
+</div>
+
+<!-- PAGE 01: Executive Summary -->
+<div class="page">
+  <div class="page-header"><span class="logo-text">PIKI</span><span>Internal Strategy — 01</span></div>
+  <h2><span class="num">1</span> Executive Summary</h2>
+
+  <div class="g2">
+    <div class="card"><h4>문제 정의</h4><p>소상공인 대다수가 광고를 집행하면서도 전환 전용 페이지 없이 SNS 프로필로 유입. 전환 추적이 안 되니 어떤 광고가 효과적인지 판단 불가.</p></div>
+    <div class="card"><h4>솔루션</h4><p>PIKI는 광고→전환 랜딩→데이터 추적→개선으로 이어지는 전환 시스템을 구축. 개발자 1인이 기획~개발~배포를 원스톱으로 제공.</p></div>
+  </div>
+
+  <h3>핵심 가치 흐름</h3>
+  <div class="flow-h">
+    <div class="flow-n">광고 유입</div><div class="flow-arr">→</div>
+    <div class="flow-n flow-c">전환 랜딩</div><div class="flow-arr">→</div>
+    <div class="flow-n">데이터 추적</div><div class="flow-arr">→</div>
+    <div class="flow-n">리타겟팅·재전환</div>
+  </div>
+
+  <h3>수익 모델 요약</h3>
+  <div class="g3">
+    <div class="card-d" style="border-radius:10px;"><h4 style="color:var(--accent);">일회 구축비</h4><div class="vm" style="color:var(--accent);">49~150만원</div><p>랜딩페이지 + 추적 세팅</p></div>
+    <div class="card-d" style="border-radius:10px;"><h4 style="color:var(--accent);">월 관리비 (MRR)</h4><div class="vm" style="color:var(--accent);">9.9~19.9만/월</div><p>콘텐츠 수정 + 기본 리포트</p></div>
+    <div class="card-d" style="border-radius:10px;"><h4 style="color:var(--accent);">추가 개발</h4><div class="vm" style="color:var(--accent);">별도 견적</div><p>결제 연동 + 예약 시스템 등</p></div>
+  </div>
+
+  <h3>팀 구성</h3>
+  <table>
+    <tr><th>역할</th><th>담당</th><th>핵심 역량</th></tr>
+    <tr><td><strong>PM / 풀스택 개발</strong></td><td>개발자 1인</td><td>풀스택, 서버 인프라, 데이터 추적 설계</td></tr>
+    <tr><td><strong>기획 / 마케팅</strong></td><td>개발자 1인 (겸임)</td><td>전환 UX 설계, GA4/GTM, 광고 추적</td></tr>
+    <tr><td><strong>디자인</strong></td><td>개발자 1인 (겸임)</td><td>UI/UX 설계, 브랜드 디자인</td></tr>
+  </table>
+  <div class="page-foot"><span>PIKI Internal Strategy</span><span>CONFIDENTIAL · 01</span></div>
+</div>
+
+<!-- PAGE 02: 시장 분석 -->
+<div class="page">
+  <div class="page-header"><span class="logo-text">PIKI</span><span>Internal Strategy — 02</span></div>
+  <h2><span class="num">2</span> 시장 분석 (Market Analysis)</h2>
+
+  <h3>시장 배경</h3>
+  <div class="g2">
+    <div class="card" style="text-align:center;"><div class="vl">340만</div><div class="vs">국내 소상공인 사업체 수 (통계청, 2024)</div></div>
+    <div class="card" style="text-align:center;"><div class="vl">증가 추세</div><div class="vs">소상공인 온라인 광고비 지출 확대</div></div>
+  </div>
+
+  <h3>현장에서 관찰되는 문제</h3>
+  <div class="g2">
+    <div class="card card-a"><h4>전환 페이지 미보유</h4><p>광고 링크가 인스타 프로필/블로그/네이버 플레이스로 연결되는 경우가 대부분. 전환 전용 랜딩 보유 업장은 극소수.</p></div>
+    <div class="card card-a"><h4>성과 측정 불가</h4><p>GA4, UTM, 픽셀 등 추적 도구를 세팅한 소상공인은 거의 없음. 어떤 광고가 효과적인지 판단 기준 부재.</p></div>
+  </div>
+
+  <h3>시장 기회 요약</h3>
+  <div class="g2">
+    <div class="card card-a"><h4>제작 대행 포화 vs 분석 부재</h4><p>웹 제작은 넘치지만, 전환 데이터 분석까지 이어지는 서비스는 전무. 블루오션.</p></div>
+    <div class="card card-a"><h4>노코드 플랫폼의 한계</h4><p>Wix, 아임웹 등은 디자인 중심. 전환 추적·CRO·리타겟팅 기능 부재.</p></div>
+  </div>
+  <div class="page-foot"><span>PIKI Internal Strategy</span><span>CONFIDENTIAL · 02</span></div>
+</div>
+
+<!-- PAGE 03: 경쟁 분석 -->
+<div class="page">
+  <div class="page-header"><span class="logo-text">PIKI</span><span>Internal Strategy — 03</span></div>
+  <h2><span class="num">3</span> 경쟁 분석 & 포지셔닝</h2>
+
+  <h3>경쟁 환경 매트릭스</h3>
+  <table style="font-size:8pt;">
+    <tr><th style="width:16%;">구분</th><th style="width:18%;">아임웹/Wix</th><th style="width:18%;">일반 에이전시</th><th style="width:18%;">마케팅 대행사</th><th style="width:30%;background:var(--primary);">PIKI</th></tr>
+    <tr><td><strong>웹 제작</strong></td><td>템플릿 기반</td><td>맞춤 개발</td><td>외주 제작</td><td><strong>전환 최적화 설계</strong></td></tr>
+    <tr><td><strong>데이터 추적</strong></td><td>기본 통계</td><td>미제공</td><td>GA4 수준</td><td><strong>UTM+픽셀+행동추적</strong></td></tr>
+    <tr><td><strong>전환 최적화</strong></td><td>없음</td><td>없음</td><td>소재 위주</td><td><strong>CRO + A/B 테스트</strong></td></tr>
+    <tr><td><strong>개선 사이클</strong></td><td>없음</td><td>1회성</td><td>광고만</td><td><strong>월간 데이터→개선</strong></td></tr>
+    <tr><td><strong>가격대</strong></td><td>월 1~3만</td><td>200~1,000만</td><td>월 100만+</td><td><strong>49만~+월 9.9만~</strong></td></tr>
+  </table>
+
+  <h3>PIKI 포지셔닝</h3>
+  <div class="card-d" style="border-radius:10px; padding:16px; text-align:center; margin:10px 0;">
+    <p style="font-size:11pt; color:rgba(255,255,255,0.8); margin:0;">
+      소상공인 대상 "웹 제작 + 전환 추적" <strong style="color:var(--accent);">원스톱 서비스</strong>는 아직 희소
+    </p>
+  </div>
+
+  <h3>SWOT 분석</h3>
+  <div class="g2">
+    <div class="card" style="border-top:3px solid var(--primary);">
+      <h4 style="color:var(--primary);">Strengths</h4>
+      <p>· 1인 풀스택 → 빠른 실행, 낮은 고정비<br>· 기획~개발~운영 원스톱<br>· 데이터 추적 내재화 (경쟁사 미보유)</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--red);">
+      <h4 style="color:var(--red);">Weaknesses</h4>
+      <p>· 1인 운영 → 동시 처리 한계 (월 3~4건)<br>· 브랜드 인지도 0에서 시작<br>· 초기 레퍼런스 부족</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--green);">
+      <h4 style="color:var(--green);">Opportunities</h4>
+      <p>· 소상공인 디지털 광고 연 18% 성장<br>· 전환 분석 시장 경쟁자 전무<br>· MRR 모델로 안정적 성장 가능</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--orange);">
+      <h4 style="color:var(--orange);">Threats</h4>
+      <p>· 대형 에이전시의 하향 진출<br>· 노코드 플랫폼의 분석 기능 추가<br>· 경기 침체 시 마케팅 예산 삭감</p>
+    </div>
+  </div>
+  <div class="page-foot"><span>PIKI Internal Strategy</span><span>CONFIDENTIAL · 03</span></div>
+</div>
+
+<!-- PAGE 04: 수익 모델 & 재무 -->
+<div class="page">
+  <div class="page-header"><span class="logo-text">PIKI</span><span>Internal Strategy — 04</span></div>
+  <h2><span class="num">4</span> 수익 모델 & 재무 계획</h2>
+
+  <h3>수익 구조</h3>
+  <table>
+    <tr><th>유형</th><th>항목</th><th>단가</th><th>전략적 의미</th></tr>
+    <tr><td><span class="tag tag-b">구축</span></td><td>전환형 랜딩 설치</td><td>49~150만</td><td>진입 장벽 낮춤 + 레퍼런스 확보</td></tr>
+    <tr><td><span class="tag tag-g">MRR</span></td><td>월 관리/수정</td><td>9.9~19.9만/월</td><td>반복 수익 + 고객 유지</td></tr>
+    <tr><td><span class="tag tag-o">확장</span></td><td>추가 기능 개발</td><td>별도 견적</td><td>고객 생애 가치 확대</td></tr>
+  </table>
+
+  <h3>1년차 매출 시나리오 (보수적)</h3>
+  <table style="font-size:8pt;">
+    <tr><th style="width:12%;">분기</th><th style="width:14%;">신규</th><th style="width:16%;">누적 MRR</th><th style="width:18%;">구축 매출</th><th style="width:18%;">MRR 합산</th><th style="width:22%;">분기 총매출</th></tr>
+    <tr><td><strong>Q1</strong></td><td>3건</td><td>2</td><td>~210만</td><td>~30만</td><td>~240만</td></tr>
+    <tr><td><strong>Q2</strong></td><td>4건</td><td>5</td><td>~280만</td><td>~120만</td><td>~400만</td></tr>
+    <tr><td><strong>Q3</strong></td><td>5건</td><td>8</td><td>~350만</td><td>~240만</td><td>~590만</td></tr>
+    <tr><td><strong>Q4</strong></td><td>5건</td><td>10</td><td>~350만</td><td>~360만</td><td>~710만</td></tr>
+    <tr style="background:rgba(0,82,204,0.05);"><td><strong>합계</strong></td><td>17건</td><td>10(유지)</td><td>~1,190만</td><td>~750만</td><td><strong>~1,940만</strong></td></tr>
+  </table>
+  <div class="src">* 평균 구축 단가 70만, MRR 전환율 60%, 분기 이탈률 20% 가정. 실제 결과는 영업력·시장 반응에 따라 크게 달라질 수 있음.</div>
+
+  <h3>비용 구조 (월간)</h3>
+  <div class="g2">
+    <div class="card">
+      <h4>고정비</h4>
+      <table style="margin:4px 0 0;">
+        <tr><td>서버/호스팅 (Vercel Pro)</td><td style="text-align:right;">2만</td></tr>
+        <tr><td>Supabase Pro</td><td style="text-align:right;">2.5만</td></tr>
+        <tr><td>도메인 (연간/12)</td><td style="text-align:right;">0.2만</td></tr>
+        <tr><td>SaaS 도구</td><td style="text-align:right;">3만</td></tr>
+        <tr style="font-weight:700;"><td>합계</td><td style="text-align:right;"><strong>~7.7만/월</strong></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4>변동비 (프로젝트당)</h4>
+      <table style="margin:4px 0 0;">
+        <tr><td>외주 디자인 (필요시)</td><td style="text-align:right;">10~20만</td></tr>
+        <tr><td>도메인 구매 (고객용)</td><td style="text-align:right;">1~2만</td></tr>
+        <tr><td>기타</td><td style="text-align:right;">~3만</td></tr>
+        <tr style="font-weight:700;"><td>합계</td><td style="text-align:right;"><strong>~14~25만/건</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3>BEP 분석</h3>
+  <div class="card card-a" style="text-align:center;">
+    <p style="font-size:10pt; margin:0;">월 고정비 ~8만 수준 → <strong style="color:var(--primary); font-size:12pt;">월 1건 구축만으로 운영비 커버 가능</strong></p>
+    <p style="margin-top:4px;">1인 운영의 핵심 이점: 고정비가 극도로 낮아 손익분기 빠름. 다만 인건비(기회비용)는 별도 고려 필요.</p>
+  </div>
+  <div class="page-foot"><span>PIKI Internal Strategy</span><span>CONFIDENTIAL · 04</span></div>
+</div>
+
+<!-- PAGE 05: 기술 아키텍처 -->
+<div class="page">
+  <div class="page-header"><span class="logo-text">PIKI</span><span>Internal Strategy — 05</span></div>
+  <h2><span class="num">5</span> 기술 아키텍처 & 데이터 전략</h2>
+
+  <h3>기술 스택</h3>
+  <div class="g3">
+    <div class="card"><h4>Frontend</h4><p>Next.js 16 (App Router)<br>TypeScript<br>반응형 CSS</p></div>
+    <div class="card"><h4>Backend</h4><p>Next.js API Routes<br>Supabase (PostgreSQL)<br>Edge Functions</p></div>
+    <div class="card"><h4>Infra</h4><p>Vercel (CDN + Serverless)<br>Supabase Auth + RLS<br>GitHub CI/CD</p></div>
+  </div>
+
+  <h3>데이터 수집 아키텍처</h3>
+  <div class="g2">
+    <div class="card card-a">
+      <h4>수집 데이터 7종</h4>
+      <p>① 유입 채널 (Source/Medium)<br>② 캠페인·키워드 매칭<br>③ CTA 클릭 좌표 (XY)<br>④ 스크롤 깊이 (도달율)<br>⑤ 섹션별 체류시간<br>⑥ 폼 시작 vs 완료<br>⑦ 이탈 구간 (Drop-off)</p>
+    </div>
+    <div class="card card-a">
+      <h4>추적 인프라</h4>
+      <p>· GA4 + GTM 풀 세팅<br>· 메타 픽셀 + 구글 Ads 픽셀<br>· UTM 파라미터 자동 수집<br>· 커스텀 이벤트 설계<br>· Supabase 실시간 DB 적재<br>· 고객용 대시보드 (Phase 2)</p>
+    </div>
+  </div>
+
+  <h3>기술 로드맵</h3>
+  <table style="font-size:8pt;">
+    <tr><th style="width:15%;">Phase</th><th style="width:15%;">기간</th><th style="width:40%;">핵심 기술 목표</th><th style="width:30%;">산출물</th></tr>
+    <tr><td><span class="tag tag-b">Phase 1</span></td><td>0~3개월</td><td>정적 랜딩 + GA4 세팅 + 기본 이벤트</td><td>Next.js SSG, GTM 컨테이너</td></tr>
+    <tr><td><span class="tag tag-g">Phase 2</span></td><td>3~6개월</td><td>DB 스키마 + 대시보드 + 리포트 자동화</td><td>고객 대시보드, 월간 리포트 PDF</td></tr>
+    <tr><td><span class="tag" style="background:rgba(124,58,237,0.1);color:var(--accent2);">Phase 3</span></td><td>6~12개월</td><td>업종별 전환 패턴 정리 + 제안 템플릿화</td><td>업종별 가이드, 제안서 자동화</td></tr>
+  </table>
+
+  <h3>데이터 활용 전략</h3>
+  <div class="card-d" style="border-radius:10px; padding:14px;">
+    <p style="font-size:10pt; color:rgba(255,255,255,0.8); margin:0; text-align:center;">
+      "데이터는 리포트용이 아니라 <strong style="color:var(--accent);">의사결정용</strong>이다."
+    </p>
+    <p style="text-align:center; margin-top:6px;">
+      수집된 데이터를 업종별로 정리 → 반복되는 패턴을 축적<br>
+      → 신규 고객 제안 시 과거 사례 기반 방향 제시
+    </p>
+  </div>
+  <div class="page-foot"><span>PIKI Internal Strategy</span><span>CONFIDENTIAL · 05</span></div>
+</div>
+
+<!-- PAGE 06: 타겟 전략 & GTM -->
+<div class="page">
+  <div class="page-header"><span class="logo-text">PIKI</span><span>Internal Strategy — 06</span></div>
+  <h2><span class="num">6</span> 타겟 전략 & Go-to-Market</h2>
+
+  <h3>타겟 선정 기준</h3>
+  <div class="big-quote">업종이 아니라 <em>비즈니스 구조</em> 기준으로 타겟한다.</div>
+
+  <div class="g2">
+    <div class="card card-a"><h4>필수 조건</h4>
+      <p>✓ 현재 광고 집행 중 (트래픽 비용 지출)<br>✓ 예약/상담 기반 (DB → 매출 직결)<br>✓ 객단가 5만원 이상 (ROI 확보 가능)<br>✓ 개선 여지 존재 (이탈률 높거나 구조 부재)</p>
+    </div>
+    <div class="card">
+      <h4>1차 공략 업종</h4>
+      <p>PT/헬스 · 피부과/뷰티 · 네일/속눈썹<br>교육/학원 · 고급 요식업 · 프랜차이즈</p>
+      <h4 style="margin-top:8px;">공통점</h4>
+      <p>광고→문의/예약→매출 구조가 명확한 업종</p>
+    </div>
+  </div>
+
+  <h3>고객 획득 전략 (GTM)</h3>
+  <table style="font-size:8pt;">
+    <tr><th style="width:22%;">채널</th><th style="width:38%;">전략</th><th style="width:14%;">목표 CPA</th><th style="width:26%;">우선순위</th></tr>
+    <tr><td><strong>인스타 DM 영업</strong></td><td>타겟 업종 사업자 직접 컨택</td><td>0원</td><td><span class="tag tag-r">Phase 1 핵심</span></td></tr>
+    <tr><td><strong>네이버 카페/커뮤니티</strong></td><td>자영업자 커뮤니티 전문가 포지셔닝</td><td>0원</td><td><span class="tag tag-b">Phase 1</span></td></tr>
+    <tr><td><strong>PIKI 자체 랜딩</strong></td><td>메타/구글 광고 → 자체 랜딩 유입</td><td>~5만원</td><td><span class="tag tag-g">Phase 2</span></td></tr>
+    <tr><td><strong>레퍼런스 마케팅</strong></td><td>기존 고객 성과 사례 공유</td><td>0원</td><td><span class="tag tag-g">Phase 2</span></td></tr>
+    <tr><td><strong>소개/추천</strong></td><td>기존 고객 추천 인센티브</td><td>~10만원</td><td><span class="tag" style="background:rgba(124,58,237,0.1);color:var(--accent2);">Phase 3</span></td></tr>
+  </table>
+
+  <h3>초기 고객 확보 목표</h3>
+  <div class="flow-h">
+    <div class="flow-n"><strong>DM/컨택</strong><br><span style="font-size:7pt;">주 20~30건</span></div><div class="flow-arr">→</div>
+    <div class="flow-n"><strong>응답/관심</strong><br><span style="font-size:7pt;">주 3~5건</span></div><div class="flow-arr">→</div>
+    <div class="flow-n"><strong>상담 진행</strong><br><span style="font-size:7pt;">월 5~8건</span></div><div class="flow-arr">→</div>
+    <div class="flow-n flow-c"><strong>계약</strong><br><span style="font-size:7pt;color:rgba(255,255,255,0.7);">월 1~2건</span></div>
+  </div>
+  <div class="src">초기에는 아웃바운드 중심. 레퍼런스 확보 후 인바운드 전환 목표.</div>
+
+  <div class="page-foot"><span>PIKI Internal Strategy</span><span>CONFIDENTIAL · 06</span></div>
+</div>
+
+<!-- PAGE 07: KPI & 리스크 -->
+<div class="page">
+  <div class="page-header"><span class="logo-text">PIKI</span><span>Internal Strategy — 07</span></div>
+  <h2><span class="num">7</span> 핵심 KPI & 리스크 관리</h2>
+
+  <h3>핵심 성과 지표 (KPI)</h3>
+  <table style="font-size:8pt;">
+    <tr><th style="width:18%;">지표</th><th style="width:18%;">Q1 목표</th><th style="width:22%;">Q2 목표</th><th style="width:22%;">Q4 목표</th><th style="width:20%;">측정 방법</th></tr>
+    <tr><td><strong>신규 계약</strong></td><td>3건</td><td>4건</td><td>5건/분기</td><td>관리 시트</td></tr>
+    <tr><td><strong>월 MRR</strong></td><td>~20만</td><td>~75만</td><td>~150만</td><td>결제 내역</td></tr>
+    <tr><td><strong>MRR 유지율</strong></td><td>측정 시작</td><td>&gt;70%</td><td>&gt;80%</td><td>해지율</td></tr>
+    <tr><td><strong>고객 만족도</strong></td><td>피드백 수집</td><td>재의뢰/추천</td><td>추천 30%+</td><td>인터뷰</td></tr>
+    <tr><td><strong>납기율</strong></td><td>90%</td><td>95%</td><td>95%+</td><td>일정 관리</td></tr>
+  </table>
+
+  <h3>리스크 분석 & 대응</h3>
+  <table style="font-size:8pt;">
+    <tr><th style="width:20%;">리스크</th><th style="width:14%;">발생 확률</th><th style="width:14%;">영향도</th><th style="width:52%;">대응 전략</th></tr>
+    <tr>
+      <td><strong>1인 처리량 한계</strong></td>
+      <td><span class="tag tag-r">높음</span></td>
+      <td><span class="tag tag-r">높음</span></td>
+      <td>템플릿 시스템화 → 제작 시간 단축. 월 3건 초과 시 프리랜서 협업.</td>
+    </tr>
+    <tr>
+      <td><strong>초기 레퍼런스 부족</strong></td>
+      <td><span class="tag tag-r">높음</span></td>
+      <td><span class="tag tag-o">중</span></td>
+      <td>PIKI 자체 랜딩을 레퍼런스로 활용. 첫 3건 할인 제공.</td>
+    </tr>
+    <tr>
+      <td><strong>고객 성과 미달</strong></td>
+      <td><span class="tag tag-o">중</span></td>
+      <td><span class="tag tag-r">높음</span></td>
+      <td>기대치 사전 관리. 벤치마크 기반 목표 설정. 3개월 개선 루프.</td>
+    </tr>
+    <tr>
+      <td><strong>경쟁사 진입</strong></td>
+      <td><span class="tag tag-o">중</span></td>
+      <td><span class="tag tag-o">중</span></td>
+      <td>데이터 자산 선점. 업종별 패턴 축적이 핵심 해자(moat).</td>
+    </tr>
+    <tr>
+      <td><strong>경기 침체</strong></td>
+      <td><span class="tag tag-b">낮음</span></td>
+      <td><span class="tag tag-o">중</span></td>
+      <td>불황일수록 광고 효율 중요. "비용 절감" 포지셔닝 강화.</td>
+    </tr>
+  </table>
+
+  <h3 style="margin:10px 0 6px;">경쟁 우위 요소</h3>
+  <div class="g3" style="margin:4px 0;">
+    <div class="card-d" style="border-radius:10px; text-align:center; padding:10px 12px;">
+      <h4 style="color:var(--accent); font-size:9pt;">축적되는 노하우</h4>
+      <p style="font-size:8pt; margin:0;">프로젝트가 쌓일수록 업종별 패턴 파악</p>
+    </div>
+    <div class="card-d" style="border-radius:10px; text-align:center; padding:10px 12px;">
+      <h4 style="color:var(--accent); font-size:9pt;">구축→관리 연계</h4>
+      <p style="font-size:8pt; margin:0;">만든 사람이 관리하니 전환비용 발생</p>
+    </div>
+    <div class="card-d" style="border-radius:10px; text-align:center; padding:10px 12px;">
+      <h4 style="color:var(--accent); font-size:9pt;">1인 풀스택 구조</h4>
+      <p style="font-size:8pt; margin:0;">고정비 최소, 의사결정 빠름</p>
+    </div>
+  </div>
+  <div class="page-foot"><span>PIKI Internal Strategy</span><span>CONFIDENTIAL · 07</span></div>
+</div>
+
+<!-- PAGE 08: 로드맵 -->
+<div class="page">
+  <div class="page-header"><span class="logo-text">PIKI</span><span>Internal Strategy — 08</span></div>
+  <h2><span class="num">8</span> 사업 로드맵 (12개월)</h2>
+
+  <h3 style="margin:10px 0 6px;">Phase 1 — 0~3개월: 첫 고객 확보</h3>
+  <div class="g2" style="margin:4px 0;">
+    <div class="card" style="border-top:4px solid var(--primary); padding:10px 12px;">
+      <h4>사업 목표</h4>
+      <p>· 첫 유료 고객 3건 확보<br>· 제작 프로세스 1회 완주<br>· 레퍼런스 포트폴리오 구축</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--primary); padding:10px 12px;">
+      <h4>기술 목표</h4>
+      <p>· Next.js 랜딩 템플릿 2종 제작<br>· GA4 + GTM 세팅 표준 절차화<br>· 제작 소요시간 5일 이내 안정화</p>
+    </div>
+  </div>
+
+  <h3 style="margin:10px 0 6px;">Phase 2 — 3~6개월: 프로세스 안착</h3>
+  <div class="g2" style="margin:4px 0;">
+    <div class="card card-a" style="border-top:4px solid var(--accent2); padding:10px 12px;">
+      <h4>사업 목표</h4>
+      <p>· 누적 10건 달성<br>· MRR 구독 고객 5건+ 확보<br>· 고객 추천/재의뢰 발생</p>
+    </div>
+    <div class="card card-a" style="border-top:4px solid var(--accent2); padding:10px 12px;">
+      <h4>기술 목표</h4>
+      <p>· 월간 리포트 포맷 정립<br>· 반복 작업 자동화 (세팅 스크립트 등)<br>· 업종별 제작 패턴 정리 시작</p>
+    </div>
+  </div>
+
+  <h3 style="margin:10px 0 6px;">Phase 3 — 6~12개월: 안정적 운영</h3>
+  <div class="g2" style="margin:4px 0;">
+    <div class="card-d" style="border-radius:10px; border-top:4px solid var(--accent); padding:10px 12px;">
+      <h4 style="color:var(--accent);">사업 목표</h4>
+      <p>· 월 MRR 100~150만 안정화<br>· 포트폴리오 기반 인바운드 유입 시작<br>· 수요 초과 시 외주 협업 체계 구축</p>
+    </div>
+    <div class="card-d" style="border-radius:10px; border-top:4px solid var(--accent); padding:10px 12px;">
+      <h4 style="color:var(--accent);">기술 목표</h4>
+      <p>· 업종별 제안서 템플릿 완성<br>· 고객용 간이 대시보드 검토<br>· 제작 효율 개선 (건당 3일 이내)</p>
+    </div>
+  </div>
+
+  <h3>마일스톤 타임라인</h3>
+  <table>
+    <tr><th>시점</th><th>마일스톤</th><th>성공 기준</th></tr>
+    <tr><td>M1</td><td>첫 유료 고객 확보</td><td>구축비 입금 + 납품 완료</td></tr>
+    <tr><td>M3</td><td>3건 누적 + 피드백 확인</td><td>고객 만족 확인, 재의뢰 의향</td></tr>
+    <tr><td>M6</td><td>10건 누적 + MRR 시작</td><td>월 구독 고객 5건+</td></tr>
+    <tr><td>M9</td><td>인바운드 유입 발생</td><td>포트폴리오 통한 자연 문의</td></tr>
+    <tr><td>M12</td><td>안정적 운영 체계 확립</td><td>월 MRR 100만+, 프로세스 표준화</td></tr>
+  </table>
+  <div class="page-foot"><span>PIKI Internal Strategy</span><span>CONFIDENTIAL · 08</span></div>
+</div>
+
+<!-- PAGE 09: Final Vision -->
+<div class="page" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40mm 30mm;">
+  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));"></div>
+
+  <div style="font-size:10pt;font-weight:600;color:var(--primary);letter-spacing:3px;margin-bottom:20px;">FINAL VISION</div>
+  <div style="font-size:30pt;font-weight:900;color:var(--dark);line-height:1.3;">
+    웹이 아니라<br>
+    <span style="background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">전환 구조를<br>설치한다.</span>
+  </div>
+
+  <div style="font-size:11pt;color:var(--gray-500);font-style:italic;margin:30px 0;">
+    We don't just build websites.<br>
+    We install Conversion Architecture.
+  </div>
+
+  <div style="width:60px;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));margin:0 auto 30px;"></div>
+
+  <div style="font-size:9.5pt;color:var(--gray-700);line-height:1.8;max-width:400px;">
+    PIKI는 단순 웹 제작이 아니라,<br>
+    소상공인의 광고 효율을 실질적으로 개선하는<br>
+    <strong style="color:var(--primary);">전환 구조 설계 서비스</strong>입니다.
+  </div>
+
+  <div style="margin-top:40px;padding:16px 24px;background:var(--gray-100);border-radius:10px;">
+    <div style="font-size:8pt;font-weight:600;color:var(--gray-500);letter-spacing:1px;margin-bottom:8px;">DOCUMENT USAGE</div>
+    <div style="display:flex;gap:20px;justify-content:center;font-size:8.5pt;color:var(--gray-700);">
+      <span>내부 전략 공유</span><span>·</span>
+      <span>팀 비전 정렬</span><span>·</span>
+      <span>투자자 사전 설명</span>
+    </div>
+  </div>
+
+  <div class="page-foot"><span>PIKI Internal Strategy</span><span>FINAL · 09</span></div>
+</div>
+
+</body>
+</html>
