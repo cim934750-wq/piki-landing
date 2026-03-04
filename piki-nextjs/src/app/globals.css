@@ -413,6 +413,185 @@ a {
     margin: 0 auto;
 }
 
+/* ===== DASHBOARD MOCKUP ===== */
+.mockup-dashboard {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dash-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.dash-live-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: livePulse 2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+    50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+}
+
+.dash-live-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.dash-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.dash-metric-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 0.3s, background 0.3s;
+}
+
+.dash-metric-card:hover {
+    border-color: rgba(79, 70, 229, 0.4);
+    background: rgba(79, 70, 229, 0.05);
+}
+
+.dash-metric-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dash-metric-value {
+    font-size: 24px;
+    font-weight: 800;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+}
+
+.dash-metric-change {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.dash-metric-change.positive {
+    color: #22c55e;
+}
+
+.dash-chart {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+}
+
+.dash-chart-title {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.dash-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 80px;
+}
+
+.dash-bar {
+    flex: 1;
+    height: var(--bar-h, 50%);
+    background: rgba(79, 70, 229, 0.3);
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    transition: background 0.3s;
+    animation: barGrow 1.5s ease-out backwards;
+}
+
+.dash-bar:nth-child(1) { animation-delay: 0.1s; }
+.dash-bar:nth-child(2) { animation-delay: 0.2s; }
+.dash-bar:nth-child(3) { animation-delay: 0.3s; }
+.dash-bar:nth-child(4) { animation-delay: 0.4s; }
+.dash-bar:nth-child(5) { animation-delay: 0.5s; }
+.dash-bar:nth-child(6) { animation-delay: 0.6s; }
+.dash-bar:nth-child(7) { animation-delay: 0.7s; }
+
+@keyframes barGrow {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.dash-bar.active {
+    background: var(--gradient-1);
+    box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
+}
+
+.dash-bar span {
+    font-size: 10px;
+    color: var(--text-muted);
+    padding: 4px 0;
+}
+
+.dash-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #22c55e;
+    font-weight: 500;
+    animation: statusSlide 0.8s ease-out 2s backwards;
+}
+
+@keyframes statusSlide {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+}
+
+.dash-status-icon {
+    width: 20px;
+    height: 20px;
+    background: rgba(34, 197, 94, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+
 /* ===== PAIN POINTS ===== */
 .pain-section {
     padding: 100px 0;
@@ -1642,6 +1821,32 @@ a {
         height: 1px;
     }
 
+    /* Dashboard mockup mobile */
+    .dash-metrics {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .dash-metric-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+    }
+
+    .dash-metric-value {
+        font-size: 20px;
+    }
+
+    .dash-bars {
+        height: 60px;
+    }
+
+    .mockup-dashboard {
+        padding: 14px;
+        gap: 12px;
+    }
+
     .section-title {
         font-size: 30px;
     }
@@ -1947,4 +2152,90 @@ a {
 
 .faq-item.open .faq-answer {
     opacity: 1;
+}
+
+/* ===== UPGRADED INTERACTIONS ===== */
+
+/* Nav active section indicator */
+.nav-links a.nav-active {
+    color: var(--primary-light);
+    position: relative;
+}
+
+.nav-links a.nav-active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-1);
+    border-radius: 1px;
+    animation: navIndicator 0.3s ease;
+}
+
+@keyframes navIndicator {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+/* Service card glow on hover */
+.service-card-inner {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card-inner::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
+    left: var(--glow-x, -100px);
+    top: var(--glow-y, -100px);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 0;
+}
+
+.service-card-inner:hover::before {
+    opacity: 1;
+}
+
+.service-card-inner > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Scroll reveal direction variants */
+[data-reveal-dir="left"] {
+    transform: translateX(-30px) !important;
+}
+
+[data-reveal-dir="right"] {
+    transform: translateX(30px) !important;
+}
+
+[data-reveal-dir="down"] {
+    transform: translateY(-20px) !important;
+}
+
+[data-reveal-dir="left"].visible,
+[data-reveal-dir="right"].visible,
+[data-reveal-dir="down"].visible {
+    transform: translateX(0) translateY(0) !important;
+}
+
+/* Stagger delay support - handled by inline style */
+
+/* Smooth number count-up highlight */
+.dash-metric-value {
+    transition: transform 0.3s ease;
+}
+
+.dash-metric-card:hover .dash-metric-value {
+    transform: scale(1.05);
 }

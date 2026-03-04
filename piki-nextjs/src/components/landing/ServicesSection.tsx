@@ -53,6 +53,8 @@ export default function ServicesSection() {
     const rotateX = ((y - centerY) / centerY) * -4
     const rotateY = ((x - centerX) / centerX) * 4
     card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`
+    card.style.setProperty('--glow-x', `${x}px`)
+    card.style.setProperty('--glow-y', `${y}px`)
   }, [])
 
   const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -69,11 +71,11 @@ export default function ServicesSection() {
         </ScrollReveal>
         <div className="services-grid">
           {services.map((s, i) => (
-            <ScrollReveal key={i} className={`service-card${s.featured ? ' featured' : ''}`}>
+            <ScrollReveal key={i} className={`service-card${s.featured ? ' featured' : ''}`} delay={i * 150}>
               <div
+                className="service-card-inner"
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                style={{ height: '100%' }}
               >
                 <div className="service-number">{s.number}</div>
                 <h3>{s.title}</h3>
